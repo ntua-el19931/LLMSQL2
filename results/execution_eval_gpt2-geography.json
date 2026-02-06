@@ -1,0 +1,138 @@
+{
+  "model": "gpt2-geography",
+  "database": "/app/data/text2sql-data/data/geography-db.added-in-2020.sqlite",
+  "metrics": {
+    "total": 20,
+    "execution_success": 12,
+    "execution_accuracy": "60.0%",
+    "result_match": 7,
+    "result_accuracy": "35.0%",
+    "gold_errors": 0,
+    "error_types": {
+      "syntax_error": 3,
+      "other_error": 5
+    }
+  },
+  "samples": [
+    {
+      "question": "what is the longest river that does not run through state_name0",
+      "gold_sql": "SELECT DISTINCT RIVERalias0.RIVER_NAME FROM RIVER AS RIVERalias0 WHERE RIVERalias0.LENGTH = ( SELECT MAX( RIVERalias1.LENGTH ) FROM RIVER AS RIVERalias1 WHERE RIVERalias1.RIVER_NAME NOT IN ( SELECT RIVERalias2.RIVER_NAME FROM RIVER AS RIVERalias2 WHERE RIVERalias2.TRAVERSE = \"state_name0\" ) ) AND RIVERalias0.RIVER_NAME NOT IN ( SELECT RIVERalias3.RIVER_NAME FROM RIVER AS RIVERalias3 WHERE RIVERalias3.TRAVERSE = \"state_name0\" ) ;",
+      "predicted_sql": "SELECT RIVERalias0.RIVER_NAME FROM RIVER AS RIVERalias0 WHERE RIVERalias0.LENGTH = ( SELECT MAX( RIVERalias1.LENGTH ) FROM RIVER AS RIVERalias1 WHERE RIVERalias1.TRAVERSE = \"state_name0\";",
+      "gold_result_count": 1,
+      "pred_result_count": 0,
+      "gold_error": null,
+      "pred_error": "near \";\": syntax error",
+      "results_match": false,
+      "pred_executes": false,
+      "inference_time": 0.0
+    },
+    {
+      "question": "what are the largest cities in the states that border the largest state",
+      "gold_sql": "SELECT CITYalias0.CITY_NAME FROM CITY AS CITYalias0 WHERE CITYalias0.POPULATION IN ( SELECT DERIVED_TABLEalias1.DERIVED_FIELDalias0 FROM ( SELECT MAX( CITYalias1.POPULATION ) AS DERIVED_FIELDalias0 , STATEalias0.STATE_NAME FROM CITY AS CITYalias1 , STATE AS STATEalias0 WHERE STATEalias0.STATE_NAME = CITYalias1.STATE_NAME AND STATEalias0.STATE_NAME IN ( SELECT BORDER_INFOalias0.BORDER FROM BORDER_INFO AS BORDER_INFOalias0 GROUP BY BORDER_INFOalias0.BORDER HAVING COUNT( 1 ) = ( SELECT MAX( DERIVED_TABLEalias0.DERIVED_FIELDalias1 ) FROM ( SELECT BORDER_INFOalias1.BORDER , COUNT( 1 ) AS DERIVED_FIELDalias1 FROM BORDER_INFO AS BORDER_INFOalias1 GROUP BY BORDER_INFOalias1.BORDER ) AS DERIVED_TABLEalias0 ) ) GROUP BY STATEalias0.STATE_NAME ) AS DERIVED_TABLEalias1 ) ;",
+      "predicted_sql": "SELECT CITYalias0.CITY_NAME FROM CITY AS CITYalias0 WHERE CITYalias0.POPULATION = ( SELECT MAX( CITYalias1.POPULATION ) FROM CITY AS CITYalias1 WHERE CITYalias1.STATE_NAME IN ( SELECT STATEalias0.STATE_NAME FROM STATE AS STATEalias0 WHERE STATEalias0.AREA = ( SELECT MAX( STATEalias1.AREA ) FROM STATE AS STATEalias1 );",
+      "gold_result_count": 2,
+      "pred_result_count": 0,
+      "gold_error": null,
+      "pred_error": "near \";\": syntax error",
+      "results_match": false,
+      "pred_executes": false,
+      "inference_time": 0.0
+    },
+    {
+      "question": "what state has no rivers",
+      "gold_sql": "SELECT STATEalias0.STATE_NAME FROM STATE AS STATEalias0 WHERE STATEalias0.STATE_NAME NOT IN ( SELECT RIVERalias0.TRAVERSE FROM RIVER AS RIVERalias0 ) ;",
+      "predicted_sql": "SELECT RIVERalias0.TRAVERSE FROM RIVER AS RIVERalias0 WHERE RIVERalias0.RIVER_NAME = \"river_name0\";",
+      "gold_result_count": 4,
+      "pred_result_count": 0,
+      "gold_error": null,
+      "pred_error": null,
+      "results_match": false,
+      "pred_executes": true,
+      "inference_time": 0.0
+    },
+    {
+      "question": "how many rivers are in the state with the highest point",
+      "gold_sql": "SELECT COUNT( RIVERalias0.RIVER_NAME ) FROM HIGHLOW AS HIGHLOWalias0 , RIVER AS RIVERalias0 WHERE HIGHLOWalias0.HIGHEST_ELEVATION = ( SELECT MAX( HIGHLOWalias1.HIGHEST_ELEVATION ) FROM HIGHLOW AS HIGHLOWalias1 ) AND RIVERalias0.TRAVERSE = HIGHLOWalias0.STATE_NAME ;",
+      "predicted_sql": "SELECT COUNT( RIVERalias0.RIVER_NAME ) FROM RIVER AS RIVERalias0 WHERE RIVERalias0.TRAVERSE IN ( SELECT RIVERalias1.TRAVERSE FROM RIVER AS RIVERalias1 WHERE RIVERalias1.TRAVERSE = \"state_name0\" );",
+      "gold_result_count": 1,
+      "pred_result_count": 1,
+      "gold_error": null,
+      "pred_error": null,
+      "results_match": false,
+      "pred_executes": true,
+      "inference_time": 0.0
+    },
+    {
+      "question": "what state has the most cities",
+      "gold_sql": "SELECT CITYalias0.STATE_NAME FROM CITY AS CITYalias0 GROUP BY CITYalias0.STATE_NAME ORDER BY COUNT( 1 ) DESC LIMIT 1 ;",
+      "predicted_sql": "SELECT CITYalias0.STATE_NAME FROM CITY AS CITYalias0 WHERE CITYalias0.CITY_NAME = \"city_name, state_name) | river(river_name, length, country_name, traverse) | lake(lake_name, area, country_name, state_name) | mountain(mountain_name, mountain_altitude, country_name, state_name) | border_info(state_name, border) | high",
+      "gold_result_count": 1,
+      "pred_result_count": 0,
+      "gold_error": null,
+      "pred_error": "unrecognized token: \"\"city_name, state_name) | river(river_name, length, country_name, traverse) | lake(lake_name, area, country_name, state_name) | mountain(mountain_name, mountain_altitude, country_name, state_name) | border_info(state_name, border) | high\"",
+      "results_match": false,
+      "pred_executes": false,
+      "inference_time": 0.0
+    },
+    {
+      "question": "what is the capital of the largest state",
+      "gold_sql": "SELECT STATEalias0.CAPITAL FROM STATE AS STATEalias0 WHERE STATEalias0.AREA = ( SELECT MAX( STATEalias1.AREA ) FROM STATE AS STATEalias1 ) ;",
+      "predicted_sql": "SELECT STATEalias0.CAPITAL FROM STATE AS STATEalias0 WHERE STATEalias0.AREA = ( SELECT MAX( STATEalias1.AREA ) FROM STATE AS STATEalias1 );",
+      "gold_result_count": 1,
+      "pred_result_count": 1,
+      "gold_error": null,
+      "pred_error": null,
+      "results_match": true,
+      "pred_executes": true,
+      "inference_time": 0.0
+    },
+    {
+      "question": "what is the capital city of the largest state in the us",
+      "gold_sql": "SELECT STATEalias0.CAPITAL FROM STATE AS STATEalias0 WHERE STATEalias0.AREA = ( SELECT MAX( STATEalias1.AREA ) FROM STATE AS STATEalias1 ) ;",
+      "predicted_sql": "SELECT STATEalias0.CAPITAL FROM STATE AS STATEalias0 WHERE STATEalias0.AREA = ( SELECT MAX( STATEalias1.AREA ) FROM STATE AS STATEalias1 );",
+      "gold_result_count": 1,
+      "pred_result_count": 1,
+      "gold_error": null,
+      "pred_error": null,
+      "results_match": true,
+      "pred_executes": true,
+      "inference_time": 0.0
+    },
+    {
+      "question": "how many cities are in state_name0",
+      "gold_sql": "SELECT COUNT( CITYalias0.CITY_NAME ) FROM CITY AS CITYalias0 WHERE CITYalias0.STATE_NAME = \"state_name0\" ;",
+      "predicted_sql": "SELECT COUNT( CITYalias0.CITY_NAME ) FROM CITY AS CITYalias0 WHERE CITYalias0.STATE_NAME = \"state_name0\";",
+      "gold_result_count": 1,
+      "pred_result_count": 1,
+      "gold_error": null,
+      "pred_error": null,
+      "results_match": true,
+      "pred_executes": true,
+      "inference_time": 0.0
+    },
+    {
+      "question": "how many cities are in state_name0",
+      "gold_sql": "SELECT COUNT( CITYalias0.CITY_NAME ) FROM CITY AS CITYalias0 WHERE CITYalias0.STATE_NAME = \"state_name0\" ;",
+      "predicted_sql": "SELECT COUNT( CITYalias0.CITY_NAME ) FROM CITY AS CITYalias0 WHERE CITYalias0.STATE_NAME = \"state_name0\";",
+      "gold_result_count": 1,
+      "pred_result_count": 1,
+      "gold_error": null,
+      "pred_error": null,
+      "results_match": true,
+      "pred_executes": true,
+      "inference_time": 0.0
+    },
+    {
+      "question": "how many cities does state_name0 have",
+      "gold_sql": "SELECT COUNT( CITYalias0.CITY_NAME ) FROM CITY AS CITYalias0 WHERE CITYalias0.STATE_NAME = \"state_name0\" ;",
+      "predicted_sql": "SELECT COUNT( CITYalias0.CITY_NAME ) FROM CITY AS CITYalias0 WHERE CITYalias0.STATE_NAME = \"state_name0\";",
+      "gold_result_count": 1,
+      "pred_result_count": 1,
+      "gold_error": null,
+      "pred_error": null,
+      "results_match": true,
+      "pred_executes": true,
+      "inference_time": 0.0
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "timestamp": "2026-02-02T01:22:32.760409",
+  "database": "atis",
+  "num_samples": 20,
+  "models": {
+    "gpt2": {
+      "model_name": "gpt2-atis",
+      "database_name": "atis",
+      "total_queries": 20,
+      "accuracy": {
+        "sqlite_execution": "40.0%",
+        "postgres_execution": "0.0%",
+        "sqlite_result_match": "15.0%",
+        "postgres_result_match": "0.0%",
+        "cross_db_consistency": "0.0%"
+      },
+      "performance": {
+        "avg_inference_time_ms": 3335.64,
+        "avg_sqlite_exec_time_ms": 1.76,
+        "avg_postgres_exec_time_ms": 0.89,
+        "total_inference_time_s": 66.71
+      },
+      "error_counts": {
+        "sqlite_missing_column": 6,
+        "postgres_missing_table": 14,
+        "sqlite_syntax_error": 3,
+        "postgres_syntax_error": 6,
+        "sqlite_other_error": 3
+      },
+      "accuracy_by_complexity": {
+        "SIMPLE": {
+          "total": 1,
+          "sqlite_exec": "100.0%",
+          "postgres_exec": "0.0%",
+          "sqlite_match": "100.0%",
+          "postgres_match": "0.0%"
+        },
+        "MEDIUM": {
+          "total": 3,
+          "sqlite_exec": "66.7%",
+          "postgres_exec": "0.0%",
+          "sqlite_match": "33.3%",
+          "postgres_match": "0.0%"
+        },
+        "COMPLEX": {
+          "total": 8,
+          "sqlite_exec": "50.0%",
+          "postgres_exec": "0.0%",
+          "sqlite_match": "0.0%",
+          "postgres_match": "0.0%"
+        },
+        "ADVANCED": {
+          "total": 8,
+          "sqlite_exec": "12.5%",
+          "postgres_exec": "0.0%",
+          "sqlite_match": "12.5%",
+          "postgres_match": "0.0%"
+        }
+      }
+    }
+  }
+}

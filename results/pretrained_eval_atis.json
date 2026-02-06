@@ -1,0 +1,111 @@
+{
+  "timestamp": "2026-02-02T06:53:36.858538",
+  "database": "atis",
+  "category": "pretrained",
+  "models": {
+    "gpt2": {
+      "model_name": "gpt2-pretrained",
+      "database_name": "atis",
+      "total_queries": 20,
+      "accuracy": {
+        "sqlite_execution": "0.0%",
+        "postgres_execution": "0.0%",
+        "sqlite_result_match": "0.0%",
+        "postgres_result_match": "0.0%",
+        "cross_db_consistency": "0.0%"
+      },
+      "performance": {
+        "avg_inference_time_ms": 46.13,
+        "avg_sqlite_exec_time_ms": 0.0,
+        "avg_postgres_exec_time_ms": 0.0,
+        "total_inference_time_s": 0.92
+      },
+      "error_counts": {},
+      "accuracy_by_complexity": {
+        "SIMPLE": {
+          "total": 1,
+          "sqlite_exec": "0.0%",
+          "postgres_exec": "0.0%",
+          "sqlite_match": "0.0%",
+          "postgres_match": "0.0%"
+        },
+        "MEDIUM": {
+          "total": 2,
+          "sqlite_exec": "0.0%",
+          "postgres_exec": "0.0%",
+          "sqlite_match": "0.0%",
+          "postgres_match": "0.0%"
+        },
+        "COMPLEX": {
+          "total": 9,
+          "sqlite_exec": "0.0%",
+          "postgres_exec": "0.0%",
+          "sqlite_match": "0.0%",
+          "postgres_match": "0.0%"
+        },
+        "ADVANCED": {
+          "total": 8,
+          "sqlite_exec": "0.0%",
+          "postgres_exec": "0.0%",
+          "sqlite_match": "0.0%",
+          "postgres_match": "0.0%"
+        }
+      }
+    },
+    "tinyllama": {
+      "model_name": "tinyllama-pretrained",
+      "database_name": "atis",
+      "total_queries": 20,
+      "accuracy": {
+        "sqlite_execution": "15.0%",
+        "postgres_execution": "0.0%",
+        "sqlite_result_match": "0.0%",
+        "postgres_result_match": "0.0%",
+        "cross_db_consistency": "0.0%"
+      },
+      "performance": {
+        "avg_inference_time_ms": 32856.31,
+        "avg_sqlite_exec_time_ms": 2.6,
+        "avg_postgres_exec_time_ms": 0.42,
+        "total_inference_time_s": 657.13
+      },
+      "error_counts": {
+        "sqlite_other_error": 9,
+        "postgres_syntax_error": 3,
+        "postgres_other_error": 11,
+        "sqlite_syntax_error": 1,
+        "sqlite_missing_table": 1
+      },
+      "accuracy_by_complexity": {
+        "SIMPLE": {
+          "total": 1,
+          "sqlite_exec": "0.0%",
+          "postgres_exec": "0.0%",
+          "sqlite_match": "0.0%",
+          "postgres_match": "0.0%"
+        },
+        "MEDIUM": {
+          "total": 2,
+          "sqlite_exec": "0.0%",
+          "postgres_exec": "0.0%",
+          "sqlite_match": "0.0%",
+          "postgres_match": "0.0%"
+        },
+        "COMPLEX": {
+          "total": 9,
+          "sqlite_exec": "33.3%",
+          "postgres_exec": "0.0%",
+          "sqlite_match": "0.0%",
+          "postgres_match": "0.0%"
+        },
+        "ADVANCED": {
+          "total": 8,
+          "sqlite_exec": "0.0%",
+          "postgres_exec": "0.0%",
+          "sqlite_match": "0.0%",
+          "postgres_match": "0.0%"
+        }
+      }
+    }
+  }
+}

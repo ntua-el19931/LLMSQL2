@@ -1,0 +1,60 @@
+{
+  "timestamp": "2026-02-02T01:21:25.509074",
+  "database": "advising",
+  "num_samples": 20,
+  "models": {
+    "gpt2": {
+      "model_name": "gpt2-advising",
+      "database_name": "advising",
+      "total_queries": 20,
+      "accuracy": {
+        "sqlite_execution": "75.0%",
+        "postgres_execution": "0.0%",
+        "sqlite_result_match": "65.0%",
+        "postgres_result_match": "0.0%",
+        "cross_db_consistency": "0.0%"
+      },
+      "performance": {
+        "avg_inference_time_ms": 3368.37,
+        "avg_sqlite_exec_time_ms": 2.55,
+        "avg_postgres_exec_time_ms": 0.83,
+        "total_inference_time_s": 67.37
+      },
+      "error_counts": {
+        "postgres_missing_table": 15,
+        "sqlite_ambiguous_column": 5,
+        "postgres_other_error": 5
+      },
+      "accuracy_by_complexity": {
+        "SIMPLE": {
+          "total": 0,
+          "sqlite_exec": "N/A",
+          "postgres_exec": "N/A",
+          "sqlite_match": "N/A",
+          "postgres_match": "N/A"
+        },
+        "MEDIUM": {
+          "total": 15,
+          "sqlite_exec": "100.0%",
+          "postgres_exec": "0.0%",
+          "sqlite_match": "86.7%",
+          "postgres_match": "0.0%"
+        },
+        "COMPLEX": {
+          "total": 0,
+          "sqlite_exec": "N/A",
+          "postgres_exec": "N/A",
+          "sqlite_match": "N/A",
+          "postgres_match": "N/A"
+        },
+        "ADVANCED": {
+          "total": 5,
+          "sqlite_exec": "0.0%",
+          "postgres_exec": "0.0%",
+          "sqlite_match": "0.0%",
+          "postgres_match": "0.0%"
+        }
+      }
+    }
+  }
+}

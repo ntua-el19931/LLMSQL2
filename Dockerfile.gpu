@@ -1,0 +1,49 @@
+# LLMSQL2 - Text-to-SQL with GPU Support (NVIDIA CUDA)
+FROM pytorch/pytorch:2.1.0-cuda12.1-cudnn8-runtime
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first for better caching
+COPY requirements.txt .
+
+# Install Python dependencies (torch already included in base image)
+RUN pip install --no-cache-dir \
+    transformers>=4.36.0 \
+    accelerate>=0.25.0 \
+    datasets>=2.16.0 \
+    pandas>=2.0.0 \
+    numpy>=1.24.0 \
+    sqlparse>=0.4.4 \
+    pg8000>=1.31.0 \
+    openai>=1.0.0 \
+    tqdm>=4.66.0 \
+    python-dotenv>=1.0.0 \
+    huggingface-hub>=0.20.0 \
+    matplotlib>=3.7.0 \
+    seaborn>=0.12.0 \
+    jupyter>=1.0.0 \
+    jupyterlab>=4.0.0
+
+# Copy application code
+COPY src/ ./src/
+COPY notebooks/ ./notebooks/
+
+# Create directories
+RUN mkdir -p results data
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONPATH=/app
+
+# Expose Jupyter port
+EXPOSE 8888
+
+# Default command - start Jupyter Lab
+CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--NotebookApp.token=''"]

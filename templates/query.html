@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Query Console - LLMSQL2</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .query-editor {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            min-height: 150px;
+        }
+        .result-table { font-size: 0.85rem; }
+        .error-box { 
+            background-color: #f8d7da; 
+            border: 1px solid #f5c6cb;
+            border-radius: 4px;
+            padding: 15px;
+        }
+        .success-box {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-database"></i> LLMSQL2
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/">Databases</a>
+                <a class="nav-link active" href="/query">SQL Query</a>
+                <a class="nav-link" href="/text2sql"><i class="bi bi-robot"></i> Text-to-SQL</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        <h2><i class="bi bi-terminal"></i> SQL Query Console</h2>
+        <p class="text-muted">Execute SQL queries against any database</p>
+
+        <div class="row">
+            <div class="col-md-8">
+                <!-- Query Input -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="bi bi-code-square"></i> Query
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">Select Database</label>
+                            <select id="dbSelect" class="form-select">
+                                {% for db_name, db_info in databases.items() %}
+                                <option value="{{ db_name }}">{{ db_name | title }} - {{ db_info.description }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">SQL Query</label>
+                            <textarea id="queryInput" class="form-control query-editor" 
+                                      placeholder="SELECT * FROM table_name LIMIT 10;">SELECT * FROM </textarea>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button id="runBtn" class="btn btn-success">
+                                <i class="bi bi-play-fill"></i> Run Query
+                            </button>
+                            <button id="clearBtn" class="btn btn-outline-secondary">
+                                <i class="bi bi-trash"></i> Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results -->
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-grid-3x3"></i> Results</span>
+                        <span id="resultCount" class="badge bg-secondary">0 rows</span>
+                    </div>
+                    <div class="card-body" id="resultArea">
+                        <p class="text-muted text-center">Run a query to see results</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="bi bi-list-ul"></i> Tables
+                        <small class="text-muted">(click to insert)</small>
+                    </div>
+                    <div class="card-body p-0" id="tableList" style="max-height: 400px; overflow-y: auto;">
+                        <p class="text-muted p-3">Select a database to see tables</p>
+                    </div>
+                </div>
+
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <i class="bi bi-lightbulb"></i> Quick Queries
+                    </div>
+                    <div class="list-group list-group-flush">
+                        <button class="list-group-item list-group-item-action quick-query" 
+                                data-query="SELECT * FROM {table} LIMIT 10;">
+                            Select all (limit 10)
+                        </button>
+                        <button class="list-group-item list-group-item-action quick-query"
+                                data-query="SELECT COUNT(*) as count FROM {table};">
+                            Count rows
+                        </button>
+                        <button class="list-group-item list-group-item-action quick-query"
+                                data-query="SELECT * FROM {table} WHERE ">
+                            Select with WHERE
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white py-3 mt-5">
+        <div class="container text-center">
+            <small>LLMSQL2 - Text-to-SQL Model Evaluation Project</small>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const dbSelect = document.getElementById('dbSelect');
+        const queryInput = document.getElementById('queryInput');
+        const runBtn = document.getElementById('runBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const resultArea = document.getElementById('resultArea');
+        const resultCount = document.getElementById('resultCount');
+        const tableList = document.getElementById('tableList');
+
+        let currentTable = '';
+
+        // Load tables when database changes
+        async function loadTables() {
+            const db = dbSelect.value;
+            try {
+                const response = await fetch(`/api/tables/${db}`);
+                const data = await response.json();
+                
+                tableList.innerHTML = data.tables.map(t => `
+                    <button class="list-group-item list-group-item-action table-item" data-table="${t}">
+                        <i class="bi bi-table"></i> ${t}
+                    </button>
+                `).join('');
+
+                // Add click handlers
+                document.querySelectorAll('.table-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        currentTable = item.dataset.table;
+                        queryInput.value = `SELECT * FROM ${currentTable} LIMIT 10;`;
+                        
+                        // Highlight selected
+                        document.querySelectorAll('.table-item').forEach(i => i.classList.remove('active'));
+                        item.classList.add('active');
+                    });
+                });
+            } catch (e) {
+                tableList.innerHTML = `<p class="text-danger p-3">Error loading tables</p>`;
+            }
+        }
+
+        // Run query
+        async function runQuery() {
+            const db = dbSelect.value;
+            const query = queryInput.value.trim();
+            
+            if (!query) {
+                alert('Please enter a query');
+                return;
+            }
+
+            runBtn.disabled = true;
+            runBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Running...';
+
+            try {
+                const response = await fetch('/api/query', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ database: db, query: query })
+                });
+                const result = await response.json();
+
+                if (result.error) {
+                    resultArea.innerHTML = `
+                        <div class="error-box">
+                            <strong><i class="bi bi-exclamation-triangle"></i> Error:</strong><br>
+                            <code>${result.error}</code>
+                        </div>
+                    `;
+                    resultCount.textContent = 'Error';
+                    resultCount.className = 'badge bg-danger';
+                } else if (result.rows) {
+                    // SELECT query
+                    if (result.rows.length === 0) {
+                        resultArea.innerHTML = `<p class="text-muted text-center">No results found</p>`;
+                        resultCount.textContent = '0 rows';
+                    } else {
+                        const headers = result.columns.map(c => `<th>${c}</th>`).join('');
+                        const rows = result.rows.map(row => {
+                            const cells = result.columns.map(c => `<td>${row[c] !== null ? row[c] : '<em class="text-muted">NULL</em>'}</td>`).join('');
+                            return `<tr>${cells}</tr>`;
+                        }).join('');
+
+                        resultArea.innerHTML = `
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover result-table">
+                                    <thead class="table-dark"><tr>${headers}</tr></thead>
+                                    <tbody>${rows}</tbody>
+                                </table>
+                            </div>
+                        `;
+                        resultCount.textContent = `${result.count} rows`;
+                    }
+                    resultCount.className = 'badge bg-success';
+                } else {
+                    // INSERT/UPDATE/DELETE
+                    resultArea.innerHTML = `
+                        <div class="success-box">
+                            <strong><i class="bi bi-check-circle"></i> Success!</strong><br>
+                            ${result.affected_rows} row(s) affected
+                        </div>
+                    `;
+                    resultCount.textContent = `${result.affected_rows} affected`;
+                    resultCount.className = 'badge bg-success';
+                }
+            } catch (e) {
+                resultArea.innerHTML = `
+                    <div class="error-box">
+                        <strong><i class="bi bi-exclamation-triangle"></i> Error:</strong><br>
+                        ${e.message}
+                    </div>
+                `;
+                resultCount.textContent = 'Error';
+                resultCount.className = 'badge bg-danger';
+            }
+
+            runBtn.disabled = false;
+            runBtn.innerHTML = '<i class="bi bi-play-fill"></i> Run Query';
+        }
+
+        // Event listeners
+        dbSelect.addEventListener('change', loadTables);
+        runBtn.addEventListener('click', runQuery);
+        clearBtn.addEventListener('click', () => {
+            queryInput.value = '';
+            resultArea.innerHTML = '<p class="text-muted text-center">Run a query to see results</p>';
+            resultCount.textContent = '0 rows';
+            resultCount.className = 'badge bg-secondary';
+        });
+
+        // Keyboard shortcut: Ctrl+Enter to run
+        queryInput.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'Enter') {
+                runQuery();
+            }
+        });
+
+        // Quick queries
+        document.querySelectorAll('.quick-query').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const query = btn.dataset.query.replace('{table}', currentTable || 'table_name');
+                queryInput.value = query;
+            });
+        });
+
+        // URL params
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('db')) {
+            dbSelect.value = urlParams.get('db');
+        }
+        if (urlParams.get('table')) {
+            currentTable = urlParams.get('table');
+            queryInput.value = `SELECT * FROM ${currentTable} LIMIT 10;`;
+        }
+
+        // Initial load
+        loadTables();
+    </script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+{
+  "metadata": {
+    "generated_at": "2026-01-31T11:17:14.512824",
+    "project": "LLMSQL2",
+    "models": [
+      "gpt2",
+      "tinyllama"
+    ],
+    "databases": [
+      "geography",
+      "advising",
+      "atis",
+      "restaurants"
+    ],
+    "backends": [
+      "sqlite",
+      "postgresql"
+    ]
+  },
+  "overall": {
+    "gpt2": {
+      "total_queries": 3,
+      "sqlite_exec_correct": 2,
+      "postgres_exec_correct": 0,
+      "sqlite_result_correct": 0,
+      "postgres_result_correct": 0,
+      "total_inference_time": 22703.4,
+      "total_sqlite_exec_time": 5.67,
+      "total_postgres_exec_time": 5.1899999999999995,
+      "sqlite_exec_accuracy": 0.6666666666666666,
+      "postgres_exec_accuracy": 0.0,
+      "sqlite_result_accuracy": 0.0,
+      "postgres_result_accuracy": 0.0,
+      "avg_inference_time_ms": 7567.8,
+      "avg_sqlite_exec_time_ms": 1.89,
+      "avg_postgres_exec_time_ms": 1.7299999999999998
+    },
+    "tinyllama": {
+      "total_queries": 3,
+      "sqlite_exec_correct": 0,
+      "postgres_exec_correct": 0,
+      "sqlite_result_correct": 0,
+      "postgres_result_correct": 0,
+      "total_inference_time": 193937.63999999998,
+      "total_sqlite_exec_time": 9.3,
+      "total_postgres_exec_time": 6.57,
+      "sqlite_exec_accuracy": 0.0,
+      "postgres_exec_accuracy": 0.0,
+      "sqlite_result_accuracy": 0.0,
+      "postgres_result_accuracy": 0.0,
+      "avg_inference_time_ms": 64645.88,
+      "avg_sqlite_exec_time_ms": 3.1,
+      "avg_postgres_exec_time_ms": 2.19
+    }
+  },
+  "by_database": {
+    "geography": {
+      "gpt2": {
+        "sqlite_exec_accuracy": 0.667,
+        "postgres_exec_accuracy": 0.0,
+        "sqlite_result_accuracy": 0.0,
+        "postgres_result_accuracy": 0.0,
+        "avg_inference_time_ms": 7567.8,
+        "total_queries": 3,
+        "error_counts": {
+          "postgres_missing_table": 2,
+          "sqlite_other_error": 1,
+          "postgres_syntax_error": 1
+        }
+      },
+      "tinyllama": {
+        "sqlite_exec_accuracy": 0.33299999999999996,
+        "postgres_exec_accuracy": 0.33299999999999996,
+        "sqlite_result_accuracy": 0.0,
+        "postgres_result_accuracy": 0.33299999999999996,
+        "avg_inference_time_ms": 64645.88,
+        "total_queries": 3,
+        "error_counts": {
+          "sqlite_other_error": 1,
+          "postgres_syntax_error": 1,
+          "sqlite_missing_column": 1,
+          "postgres_other_error": 1
+        }
+      }
+    }
+  }
+}

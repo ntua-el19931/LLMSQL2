@@ -1,0 +1,49 @@
+# Docker ignore file for LLMSQL2
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Virtual environment
+.venv/
+venv/
+ENV/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Local env files (will use docker env)
+.env
+
+# Large files that should be downloaded fresh
+*.pt
+*.bin
+*.safetensors
+
+# Test data that will be cloned
+data/text2sql-data/

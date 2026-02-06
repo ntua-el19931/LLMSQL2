@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ db_name | title }} Database - LLMSQL2</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .table-card {
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        .table-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-database"></i> LLMSQL2
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/">Databases</a>
+                <a class="nav-link" href="/query">SQL Query</a>
+                <a class="nav-link" href="/text2sql"><i class="bi bi-robot"></i> Text-to-SQL</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="bg-light py-4">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="/">Databases</a></li>
+                    <li class="breadcrumb-item active">{{ db_name | title }}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="container my-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2><i class="bi bi-database"></i> {{ db_name | title }} Database</h2>
+                <p class="text-muted">{{ db_info.description }}</p>
+            </div>
+            <a href="/query?db={{ db_name }}" class="btn btn-primary">
+                <i class="bi bi-terminal"></i> Query This Database
+            </a>
+        </div>
+
+        <h4 class="mb-3"><i class="bi bi-table"></i> Tables ({{ tables | length }})</h4>
+        
+        <div class="row g-3">
+            {% for table in tables %}
+            <div class="col-md-4 col-lg-3">
+                <div class="card table-card h-100" onclick="window.location='/database/{{ db_name }}/table/{{ table }}'">
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <i class="bi bi-table text-primary"></i> {{ table }}
+                        </h6>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <a href="/database/{{ db_name }}/table/{{ table }}" class="btn btn-sm btn-outline-primary w-100">
+                            View Data
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white py-3 mt-5">
+        <div class="container text-center">
+            <small>LLMSQL2 - Text-to-SQL Model Evaluation Project</small>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

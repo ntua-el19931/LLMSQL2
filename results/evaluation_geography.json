@@ -1,0 +1,173 @@
+{
+  "model": "ManthanKulakarni/TinyLlama-1.1B-Text2SQL",
+  "dataset": "geography",
+  "num_samples": 20,
+  "timestamp": "2026-01-24T16:48:13.821395",
+  "metrics": {
+    "exact_match_accuracy": 0.0,
+    "avg_keyword_overlap": 86.33333333333333,
+    "avg_inference_time_seconds": 22.2567791223526
+  },
+  "results": [
+    {
+      "question": "what is the biggest city in arizona",
+      "gold_sql": "SELECT CITYalias0.CITY_NAME FROM CITY AS CITYalias0 WHERE CITYalias0.POPULATION = ( SELECT MAX( CITYalias1.POPULATION ) FROM CITY AS CITYalias1 WHERE CITYalias1.STATE_NAME = \"arizona\" ) AND CITYalias0.STATE_NAME = \"arizona\" ;",
+      "predicted_sql": "### Context:\nCREATE TABLE city (state_name VARCHAR, city_id VARCHAR); CREATE TABLE mountain (name VARCHAR, height VARCHAR, prominence VARCHAR)\n### Question:\nWhat are the names of cities that have a mountain prominence higher than 1000 and a lake prominence lower than 1000?\n### Answer:\nSELECT T1.name FROM city AS T1 JOIN mountain AS T2 ON T1.city",
+      "exact_match": false,
+      "keyword_overlap": 0.5,
+      "time": 22.18065094947815
+    },
+    {
+      "question": "which rivers run through the state with the largest city in the us",
+      "gold_sql": "SELECT RIVERalias0.RIVER_NAME FROM RIVER AS RIVERalias0 WHERE RIVERalias0.TRAVERSE IN ( SELECT CITYalias0.STATE_NAME FROM CITY AS CITYalias0 WHERE CITYalias0.POPULATION = ( SELECT MAX( CITYalias1.POPULATION ) FROM CITY AS CITYalias1 ) ) ;",
+      "predicted_sql": "### Context:\nCREATE TABLE city (city_name VARCHAR, state_name VARCHAR)\n### Question:\nWhat are the names of cities that contain the word \"USA\" in their names?\n### Answer:\nSELECT city_name FROM city WHERE city_name LIKE \"%USA%\" UNION SELECT city_name FROM city WHERE state_name LIKE \"%USA%\" AND state_name_in_us = (SELECT state_name FROM city WHERE state_name_in_",
+      "exact_match": false,
+      "keyword_overlap": 0.75,
+      "time": 22.67759108543396
+    },
+    {
+      "question": "how big is texas",
+      "gold_sql": "SELECT STATEalias0.AREA FROM STATE AS STATEalias0 WHERE STATEalias0.STATE_NAME = \"texas\" ;",
+      "predicted_sql": "### Context:\nCREATE TABLE mountain (name VARCHAR, height VARCHAR, prominence VARCHAR)\n### Question:\nWhat are the names and heights of the mountains that are not in Texas?\n### Answer:\nSELECT name, height FROM mountain WHERE NOT state_name IN (SELECT state_name FROM lake WHERE prominence > (SELECT MIN(prominence) FROM lake WHERE state_name = 'Texas') EXCEPT SELECT T1.name",
+      "exact_match": false,
+      "keyword_overlap": 1.0,
+      "time": 21.917490243911743
+    },
+    {
+      "question": "how many people live in washington",
+      "gold_sql": "SELECT STATEalias0.POPULATION FROM STATE AS STATEalias0 WHERE STATEalias0.STATE_NAME = \"washington\" ;",
+      "predicted_sql": "### Context:\nCREATE TABLE mountain (name VARCHAR, height VARCHAR, prominence VARCHAR)\n### Question:\nWhat are the names and heights of the mountains that are not in the country of Washington?\n### Answer:\nSELECT name, height FROM mountain WHERE NOT state_name IN (SELECT state_name FROM city WHERE state_name = 'Washington') EXCEPT SELECT T1.name, T1.height FROM mountain AS T1 JOIN city AS",
+      "exact_match": false,
+      "keyword_overlap": 1.0,
+      "time": 22.003180027008057
+    },
+    {
+      "question": "what state has the smallest population",
+      "gold_sql": "SELECT STATEalias0.STATE_NAME FROM STATE AS STATEalias0 WHERE STATEalias0.POPULATION = ( SELECT MIN( STATEalias1.POPULATION ) FROM STATE AS STATEalias1 ) ;",
+      "predicted_sql": "### Context:\nCREATE TABLE mountain (name VARCHAR, height VARCHAR, prominence VARCHAR)\n### Question:\nWhat are the names and heights of the mountains that are not in the country with the largest population?\n### Answer:\nSELECT name, height FROM mountain WHERE NOT state_name IN (SELECT state_name FROM city AS T1 JOIN highlow AS T2 ON T1.state_name = T2.state_name WHERE T1.country",
+      "exact_match": false,
+      "keyword_overlap": 1.0,
+      "time": 22.022807836532593
+    },
+    {
+      "question": "give me the cities in virginia",
+      "gold_sql": "SELECT CITYalias0.CITY_NAME FROM CITY AS CITYalias0 WHERE CITYalias0.STATE_NAME = \"virginia\" ;",
+      "predicted_sql": "### Context:\nCREATE TABLE city (state_name VARCHAR, city_id VARCHAR); CREATE TABLE mountain (name VARCHAR, height VARCHAR, prominence VARCHAR, country_id VARCHAR)\n### Question:\nWhat are the names of the mountains that are higher than 1000 and are in Virginia?\n### Answer:\nSELECT T1.name FROM mountain AS T1 JOIN city AS T2 ON T1.height > 1000 AND T",
+      "exact_match": false,
+      "keyword_overlap": 0.6666666666666666,
+      "time": 22.480947494506836
+    },
+    {
+      "question": "what is the area of the state with the capital albany",
+      "gold_sql": "SELECT STATEalias0.AREA FROM STATE AS STATEalias0 WHERE STATEalias0.CAPITAL = \"albany\" ;",
+      "predicted_sql": "### Context:\nCREATE TABLE mountain (name VARCHAR, height VARCHAR, prominence VARCHAR)\n### Question:\nWhat are the names and heights of mountains whose prominence is higher than 1000?\n### Answer:\nSELECT T1.name, T1.height FROM mountain AS T1 JOIN highlow AS T2 ON T1.mountain_altitude > 1000 WHERE T2.state_name = T1",
+      "exact_match": false,
+      "keyword_overlap": 1.0,
+      "time": 22.361473083496094
+    },
+    {
+      "question": "give me the lakes in california",
+      "gold_sql": "SELECT LAKEalias0.LAKE_NAME FROM LAKE AS LAKEalias0 WHERE LAKEalias0.STATE_NAME = \"california\" ;",
+      "predicted_sql": "### Context:\nCREATE TABLE mountain (name VARCHAR, height VARCHAR, prominence VARCHAR)\n### Question:\nWhat are the names and heights of the mountains that are not in California?\n### Answer:\nSELECT name, height FROM mountain WHERE NOT state_name IN (SELECT state_name FROM lake WHERE prominence > (SELECT MIN(prominence) FROM lake WHERE country_name = 'California') EXCEPT SELECT T1.",
+      "exact_match": false,
+      "keyword_overlap": 1.0,
+      "time": 22.506908893585205
+    },
+    {
+      "question": "name the major lakes in michigan",
+      "gold_sql": "SELECT LAKEalias0.LAKE_NAME FROM LAKE AS LAKEalias0 WHERE LAKEalias0.AREA > 750 AND LAKEalias0.STATE_NAME = \"michigan\" ;",
+      "predicted_sql": "### Context:\nCREATE TABLE mountain (name VARCHAR, height VARCHAR, prominence VARCHAR)\n### Question:\nWhat are the names of the mountains that are higher than 1000 or lower than 500?\n### Answer:\nSELECT name FROM mountain WHERE height > 1000 OR prominence < 500 OR state_name = 'Michigan' OR TIME(state_name) = 'Michigan' OR",
+      "exact_match": false,
+      "keyword_overlap": 1.0,
+      "time": 22.076703548431396
+    },
+    {
+      "question": "what are the states",
+      "gold_sql": "SELECT STATEalias0.STATE_NAME FROM STATE AS STATEalias0 ;",
+      "predicted_sql": "### Context:\nCREATE TABLE mountain (name VARCHAR, height VARCHAR, prominence VARCHAR)\n### Question:\nWhat are the names and heights of the mountains that are not in the country with the highest density of lakes?\n### Answer:\nSELECT name, height FROM mountain WHERE NOT state_name IN (SELECT T1.state_name FROM city AS T1 JOIN highlow AS T2 ON T1.city_id = T2.city_",
+      "exact_match": false,
+      "keyword_overlap": 1.0,
+      "time": 22.373807430267334
+    },
+    {
+      "question": "which states do colorado river flow through",
+      "gold_sql": "SELECT RIVERalias0.TRAVERSE FROM RIVER AS RIVERalias0 WHERE RIVERalias0.RIVER_NAME = \"colorado\" ;",
+      "predicted_sql": "### Context:\nCREATE TABLE mountain (name VARCHAR, height VARCHAR, prominence VARCHAR)\n### Question:\nWhat are the names and heights of mountains that are not in the country of Colorado?\n### Answer:\nSELECT name, height FROM mountain WHERE NOT state_name IN (SELECT state_name FROM city WHERE state_name = 'Colorado') AND state_name <> 'Colorado') AND prominence < (SELECT MIN(prominence",
+      "exact_match": false,
+      "keyword_overlap": 1.0,
+      "time": 22.12706685066223
+    },
+    {
+      "question": "what state has the largest population",
+      "gold_sql": "SELECT STATEalias0.STATE_NAME FROM STATE AS STATEalias0 WHERE STATEalias0.POPULATION = ( SELECT MAX( STATEalias1.POPULATION ) FROM STATE AS STATEalias1 ) ;",
+      "predicted_sql": "### Context:\nCREATE TABLE mountain (name VARCHAR, height VARCHAR, prominence VARCHAR)\n### Question:\nWhat are the names and heights of the mountains that are not in the country with the largest population?\n### Answer:\nSELECT name, height FROM mountain WHERE NOT state_name IN (SELECT state_name FROM city AS T1 JOIN highlow AS T2 ON T1.state_name = T2.state_name WHERE T1.country",
+      "exact_match": false,
+      "keyword_overlap": 0.75,
+      "time": 22.08410620689392
+    },
+    {
+      "question": "what is the lowest elevation in pennsylvania",
+      "gold_sql": "SELECT HIGHLOWalias0.LOWEST_ELEVATION FROM HIGHLOW AS HIGHLOWalias0 WHERE HIGHLOWalias0.STATE_NAME = \"pennsylvania\" ;",
+      "predicted_sql": "### Context:\nCREATE TABLE mountain (name VARCHAR, height VARCHAR, prominence VARCHAR)\n### Question:\nWhat are the names and heights of mountains that are not in Pennsylvania?\n### Answer:\nSELECT name, height FROM mountain WHERE NOT state_name IN (SELECT state_name FROM city WHERE state_name = 'Pennsylvania') EXCEPT SELECT T1.name, T1.height FROM mountain AS T1 JOIN city AS T2",
+      "exact_match": false,
+      "keyword_overlap": 1.0,
+      "time": 22.269312381744385
+    },
+    {
+      "question": "what is the highest point in each state whose lowest point is sea level",
+      "gold_sql": "SELECT HIGHLOWalias0.HIGHEST_POINT , HIGHLOWalias0.STATE_NAME FROM HIGHLOW AS HIGHLOWalias0 WHERE HIGHLOWalias0.LOWEST_ELEVATION = 0 ;",
+      "predicted_sql": "### Context:\nCREATE TABLE mountain (name VARCHAR, height VARCHAR, prominence VARCHAR)\n### Question:\nWhat are the names and heights of mountains whose prominence is higher than 1000?\n### Answer:\nSELECT T1.name, T1.height FROM mountain AS T1 JOIN highlow AS T2 ON T1.mountain_id = T2.mountain_id WHERE T2.country_name = '",
+      "exact_match": false,
+      "keyword_overlap": 1.0,
+      "time": 22.49289846420288
+    },
+    {
+      "question": "what is the length of the longest river in the usa",
+      "gold_sql": "SELECT DISTINCT RIVERalias0.LENGTH FROM RIVER AS RIVERalias0 WHERE RIVERalias0.LENGTH = ( SELECT MAX( RIVERalias1.LENGTH ) FROM RIVER AS RIVERalias1 ) ;",
+      "predicted_sql": "### Context:\nCREATE TABLE mountain (name VARCHAR, height VARCHAR, prominence VARCHAR)\n### Question:\nWhat are the names and heights of the mountains that are in the USA?\n### Answer:\nSELECT T1.name, T1.height FROM mountain AS T1 JOIN highlow AS T2 ON T1.prominence = T2.state_name WHERE T2.country_name = 'USA' ORDER BY T2.low",
+      "exact_match": false,
+      "keyword_overlap": 0.75,
+      "time": 22.176060438156128
+    },
+    {
+      "question": "what is the longest river flowing through new york",
+      "gold_sql": "SELECT RIVERalias0.RIVER_NAME FROM RIVER AS RIVERalias0 WHERE RIVERalias0.LENGTH = ( SELECT MAX( RIVERalias1.LENGTH ) FROM RIVER AS RIVERalias1 WHERE RIVERalias1.TRAVERSE = \"new york\" ) AND RIVERalias0.TRAVERSE = \"new york\" ;",
+      "predicted_sql": "### Context:\nCREATE TABLE city (city_name VARCHAR, city_id VARCHAR); CREATE TABLE mountain (mountain_id VARCHAR, height INTEGER)\n### Question:\nWhat are the names of cities that have a mountain with height more than 1000?\n### Answer:\nSELECT T1.city_name FROM city AS T1 JOIN mountain AS T2 ON T1.city_id = T2.city_id WHERE T2",
+      "exact_match": false,
+      "keyword_overlap": 0.75,
+      "time": 22.49824833869934
+    },
+    {
+      "question": "how many rivers are in new york",
+      "gold_sql": "SELECT COUNT( RIVERalias0.RIVER_NAME ) FROM RIVER AS RIVERalias0 WHERE RIVERalias0.TRAVERSE = \"new york\" ;",
+      "predicted_sql": "### Context:\nCREATE TABLE city (city_name VARCHAR, city_id VARCHAR); CREATE TABLE mountain (mountain_id VARCHAR, height INTEGER)\n### Question:\nWhat are the names of cities that have mountains with height higher than 1000 or lower than 1000?\n### Answer:\nSELECT T1.city_name FROM city AS T1 JOIN mountain AS T2 ON T1.city_id = T2",
+      "exact_match": false,
+      "keyword_overlap": 0.5,
+      "time": 22.054731607437134
+    },
+    {
+      "question": "what states neighbor maine",
+      "gold_sql": "SELECT BORDER_INFOalias0.BORDER FROM BORDER_INFO AS BORDER_INFOalias0 WHERE BORDER_INFOalias0.STATE_NAME = \"maine\" ;",
+      "predicted_sql": "### Context:\nCREATE TABLE mountain (name VARCHAR, height VARCHAR, country_name VARCHAR)\n### Question:\nWhat are the names and heights of the mountains that are not in the country of New Zealand?\n### Answer:\nSELECT name, height FROM mountain WHERE country_name <> 'New Zealand' EXCEPT SELECT T1.name, T1.height FROM mountain AS T1 JOIN city AS T2 ON T1.country_name = T2",
+      "exact_match": false,
+      "keyword_overlap": 1.0,
+      "time": 22.356269121170044
+    },
+    {
+      "question": "name all the rivers in colorado",
+      "gold_sql": "SELECT RIVERalias0.RIVER_NAME FROM RIVER AS RIVERalias0 WHERE RIVERalias0.TRAVERSE = \"colorado\" ;",
+      "predicted_sql": "### Context:\nCREATE TABLE mountain (name VARCHAR, height VARCHAR, prominence VARCHAR)\n### Question:\nWhat are the names and heights of the mountains that are in Colorado?\n### Answer:\nSELECT T1.name, T1.height FROM mountain AS T1 JOIN highlow AS T2 ON T1.prominence = T2.state_name WHERE T2.country_name = 'Colorado' AND T2.state_",
+      "exact_match": false,
+      "keyword_overlap": 1.0,
+      "time": 22.224863052368164
+    },
+    {
+      "question": "how many states border the state that borders the most states",
+      "gold_sql": "SELECT MAX( DERIVED_TABLEalias0.DERIVED_FIELDalias0 ) FROM ( SELECT BORDER_INFOalias0.STATE_NAME , COUNT( DISTINCT BORDER_INFOalias0.BORDER ) AS DERIVED_FIELDalias0 FROM BORDER_INFO AS BORDER_INFOalias0 GROUP BY BORDER_INFOalias0.STATE_NAME ) AS DERIVED_TABLEalias0 ;",
+      "predicted_sql": "### Context:\nCREATE TABLE state (state_name VARCHAR, country_name VARCHAR, state_id VARCHAR); CREATE TABLE mountain (state_id VARCHAR, height INTEGER)\n### Question:\nWhat are the names of the states that have mountains with height more than 1000 or have a latitude of 48.0e?\n### Answer:\nSELECT T1.state_name FROM state AS T1 JOIN mountain AS T2 ON T",
+      "exact_match": false,
+      "keyword_overlap": 0.6,
+      "time": 22.250465393066406
+    }
+  ]
+}

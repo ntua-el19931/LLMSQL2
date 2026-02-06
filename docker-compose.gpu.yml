@@ -1,0 +1,66 @@
+# Docker Compose for GPU-enabled LLMSQL2
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15
+    container_name: llmsql2-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: geography
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/init-db.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - llmsql2-network
+
+  # LLMSQL2 Application with GPU
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.gpu
+    container_name: llmsql2-app-gpu
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/app/notebooks
+      - ./results:/app/results
+      - ./src:/app/src
+      - model_cache:/root/.cache/huggingface
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=geography
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - NVIDIA_VISIBLE_DEVICES=all
+    depends_on:
+      postgres:
+        condition: service_healthy
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    networks:
+      - llmsql2-network
+
+volumes:
+  postgres_data:
+  model_cache:
+
+networks:
+  llmsql2-network:
+    driver: bridge

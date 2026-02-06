@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+*.env.local
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Model cache (large files)
+*.bin
+*.safetensors
+model_cache/
+
+# Training results (too large for git - upload separately)
+training_results/
+results/gpt2-*/
+results/tinyllama-*/
+
+# External dataset (clone separately)
+data/text2sql-data/
+
+# Docker volumes
+postgres_data/
+
+# Logs
+*.log
+training_batch.log
+training_output.log
+
+# Temp files
+*.tmp
+*.bak

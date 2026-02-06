@@ -1,0 +1,91 @@
+{
+  "timestamp": "2026-01-26 08:14:18.178700",
+  "models": {
+    "gpt2": {
+      "exact_match": 0,
+      "partial_match": 20,
+      "total": 20,
+      "accuracy": 0.0,
+      "samples": [
+        {
+          "question": "what is the longest river that does not run through state_name0",
+          "gold": "SELECT DISTINCT RIVERalias0.RIVER_NAME FROM RIVER AS RIVERalias0 WHERE RIVERalias0.LENGTH = ( SELECT",
+          "pred": "SELECT RIVERalias0.RIVER_NAME FROM RIVER AS RIVERalias0 WHERE RIVERalias0.LENGTH = ( SELECT MAX( RIV",
+          "exact": false,
+          "kw_overlap": 1.0
+        },
+        {
+          "question": "what are the largest cities in the states that border the largest state",
+          "gold": "SELECT CITYalias0.CITY_NAME FROM CITY AS CITYalias0 WHERE CITYalias0.POPULATION IN ( SELECT DERIVED_",
+          "pred": "SELECT CITYalias0.CITY_NAME FROM CITY AS CITYalias0 WHERE CITYalias0.POPULATION = ( SELECT MAX( CITY",
+          "exact": false,
+          "kw_overlap": 0.8
+        },
+        {
+          "question": "what state has no rivers",
+          "gold": "SELECT STATEalias0.STATE_NAME FROM STATE AS STATEalias0 WHERE STATEalias0.STATE_NAME NOT IN ( SELECT",
+          "pred": "SELECT RIVERalias0.TRAVERSE FROM RIVER AS RIVERalias0 WHERE RIVERalias0.RIVER_NAME = \"river_name0\";",
+          "exact": false,
+          "kw_overlap": 1.0
+        },
+        {
+          "question": "how many rivers are in the state with the highest point",
+          "gold": "SELECT COUNT( RIVERalias0.RIVER_NAME ) FROM HIGHLOW AS HIGHLOWalias0 , RIVER AS RIVERalias0 WHERE HI",
+          "pred": "SELECT COUNT( RIVERalias0.RIVER_NAME ) FROM RIVER AS RIVERalias0 WHERE RIVERalias0.TRAVERSE IN ( SEL",
+          "exact": false,
+          "kw_overlap": 0.8
+        },
+        {
+          "question": "what state has the most cities",
+          "gold": "SELECT CITYalias0.STATE_NAME FROM CITY AS CITYalias0 GROUP BY CITYalias0.STATE_NAME ORDER BY COUNT( ",
+          "pred": "SELECT CITYalias0.STATE_NAME FROM CITY AS CITYalias0 WHERE CITYalias0.CITY_NAME = \"city_name, state_",
+          "exact": false,
+          "kw_overlap": 1.0
+        }
+      ]
+    },
+    "tinyllama": {
+      "exact_match": 0,
+      "partial_match": 16,
+      "total": 20,
+      "accuracy": 0.0,
+      "samples": [
+        {
+          "question": "what is the longest river that does not run through state_name0",
+          "gold": "SELECT DISTINCT RIVERalias0.RIVER_NAME FROM RIVER AS RIVERalias0 WHERE RIVERalias0.LENGTH = ( SELECT",
+          "pred": "SELECT DISTINCT RIVERalias0.RIVER_NAME FROM RIVER AS RIVERalias0 WHERE RIVERalias0.LENGTH = ( SELECT",
+          "exact": false,
+          "kw_overlap": 1.0
+        },
+        {
+          "question": "what are the largest cities in the states that border the largest state",
+          "gold": "SELECT CITYalias0.CITY_NAME FROM CITY AS CITYalias0 WHERE CITYalias0.POPULATION IN ( SELECT DERIVED_",
+          "pred": "SELECT CITYalias0.CITY_NAME FROM CITY AS CITYalias0 WHERE CITYalias0.POPULATION = ( SELECT MAX( CITY",
+          "exact": false,
+          "kw_overlap": 0.8
+        },
+        {
+          "question": "what state has no rivers",
+          "gold": "SELECT STATEalias0.STATE_NAME FROM STATE AS STATEalias0 WHERE STATEalias0.STATE_NAME NOT IN ( SELECT",
+          "pred": "SELECT STATEalias0.STATE_NAME FROM STATE AS STATEalias0 WHERE STATEalias0.STATE_NAME NOT IN ( SELECT",
+          "exact": false,
+          "kw_overlap": 1.0
+        },
+        {
+          "question": "how many rivers are in the state with the highest point",
+          "gold": "SELECT COUNT( RIVERalias0.RIVER_NAME ) FROM HIGHLOW AS HIGHLOWalias0 , RIVER AS RIVERalias0 WHERE HI",
+          "pred": "SELECT COUNT( RIVERalias0.RIVER_NAME ) FROM RIVER AS RIVERalias0 WHERE RIVERalias0.TRAVERSE = ( SELE",
+          "exact": false,
+          "kw_overlap": 1.0
+        },
+        {
+          "question": "what state has the most cities",
+          "gold": "SELECT CITYalias0.STATE_NAME FROM CITY AS CITYalias0 GROUP BY CITYalias0.STATE_NAME ORDER BY COUNT( ",
+          "pred": "SELECT CITYalias1.STATE_NAME FROM CITY AS CITYalias1 GROUP BY CITYalias1.STATE_NAME ORDER BY COUNT( ",
+          "exact": false,
+          "kw_overlap": 1.0
+        }
+      ]
+    }
+  }
+}

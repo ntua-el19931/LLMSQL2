@@ -1,0 +1,874 @@
+{
+  "timestamp": "2026-02-05 09:48:36.131346",
+  "num_samples": 20,
+  "models": {
+    "gpt2-geography": {
+      "model_name": "gpt2-geography",
+      "model_type": "gpt2",
+      "num_samples": 20,
+      "timestamp": "2026-02-05 09:48:36.616487",
+      "metrics": {
+        "exact_match": 0,
+        "partial_match": 18,
+        "execution_success": 17,
+        "result_match": 7,
+        "exact_match_pct": 0.0,
+        "execution_success_pct": 85.0,
+        "result_match_pct": 35.0
+      },
+      "samples": [
+        {
+          "question": "what is the longest river that does not run through state_name0",
+          "gold_sql": "SELECT DISTINCT RIVERalias0.RIVER_NAME FROM RIVER AS RIVERalias0 WHERE RIVERalias0.LENGTH = ( SELECT MAX( RIVERalias1.LENGTH ) FROM RIVER AS RIVERalias1 WHERE RIVERalias1.RIVER_NAME NOT IN ( SELECT RI",
+          "pred_sql": "SELECT RIVERalias0.RIVER_NAME FROM RIVER AS RIVERalias0 WHERE RIVERalias0.LENGTH = ( SELECT MAX( RIVERalias1.LENGTH ) FROM RIVER AS RIVERalias1 WHERE RIVERalias1.TRAVERSE = \"state_name0\"",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 8.326
+        },
+        {
+          "question": "what are the largest cities in the states that border the largest state",
+          "gold_sql": "SELECT CITYalias0.CITY_NAME FROM CITY AS CITYalias0 WHERE CITYalias0.POPULATION IN ( SELECT DERIVED_TABLEalias1.DERIVED_FIELDalias0 FROM ( SELECT MAX( CITYalias1.POPULATION ) AS DERIVED_FIELDalias0 , ",
+          "pred_sql": "SELECT CITYalias0.CITY_NAME FROM CITY AS CITYalias0 WHERE CITYalias0.POPULATION = ( SELECT MAX( CITYalias1.POPULATION ) FROM CITY AS CITYalias1 )",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": false,
+          "pred_error": null,
+          "inference_time": 5.444
+        },
+        {
+          "question": "what state has no rivers",
+          "gold_sql": "SELECT STATEalias0.STATE_NAME FROM STATE AS STATEalias0 WHERE STATEalias0.STATE_NAME NOT IN ( SELECT RIVERalias0.TRAVERSE FROM RIVER AS RIVERalias0 ) ;",
+          "pred_sql": "SELECT RIVERalias0.TRAVERSE FROM RIVER AS RIVERalias0 WHERE RIVERalias0.RIVER_NAME = \"river_name0\"",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": false,
+          "pred_error": null,
+          "inference_time": 5.458
+        },
+        {
+          "question": "how many rivers are in the state with the highest point",
+          "gold_sql": "SELECT COUNT( RIVERalias0.RIVER_NAME ) FROM HIGHLOW AS HIGHLOWalias0 , RIVER AS RIVERalias0 WHERE HIGHLOWalias0.HIGHEST_ELEVATION = ( SELECT MAX( HIGHLOWalias1.HIGHEST_ELEVATION ) FROM HIGHLOW AS HIGH",
+          "pred_sql": "SELECT COUNT( RIVERalias0.RIVER_NAME ) FROM RIVER AS RIVERalias0 WHERE RIVERalias0.TRAVERSE = \"state_name, highest_elevation, lowest_point, highest_point, lowest_elevation\"",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": false,
+          "pred_error": null,
+          "inference_time": 5.436
+        },
+        {
+          "question": "what state has the most cities",
+          "gold_sql": "SELECT CITYalias0.STATE_NAME FROM CITY AS CITYalias0 GROUP BY CITYalias0.STATE_NAME ORDER BY COUNT( 1 ) DESC LIMIT 1 ;",
+          "pred_sql": "SELECT CITYalias0.STATE_NAME FROM CITY AS CITYalias0 WHERE CITYalias0.POPULATION = ( SELECT MAX( CITYalias1.POPULATION ) FROM CITY AS CITYalias1 )",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": false,
+          "pred_error": null,
+          "inference_time": 5.52
+        },
+        {
+          "question": "what is the capital of the largest state",
+          "gold_sql": "SELECT STATEalias0.CAPITAL FROM STATE AS STATEalias0 WHERE STATEalias0.AREA = ( SELECT MAX( STATEalias1.AREA ) FROM STATE AS STATEalias1 ) ;",
+          "pred_sql": "SELECT STATEalias1.CAPITAL FROM STATE AS STATEalias1 WHERE STATEalias1.STATE_NAME = \"largest_state_name0\"",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": false,
+          "pred_error": null,
+          "inference_time": 5.418
+        },
+        {
+          "question": "what is the capital city of the largest state in the us",
+          "gold_sql": "SELECT STATEalias0.CAPITAL FROM STATE AS STATEalias0 WHERE STATEalias0.AREA = ( SELECT MAX( STATEalias1.AREA ) FROM STATE AS STATEalias1 ) ;",
+          "pred_sql": "SELECT STATEalias0.CAPITAL FROM STATE AS STATEalias0 WHERE STATEalias0.AREA = ( SELECT MAX( STATEalias1.AREA ) FROM STATE AS STATEalias1 )",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": true,
+          "pred_error": null,
+          "inference_time": 5.711
+        },
+        {
+          "question": "how many cities are in state_name0",
+          "gold_sql": "SELECT COUNT( CITYalias0.CITY_NAME ) FROM CITY AS CITYalias0 WHERE CITYalias0.STATE_NAME = \"state_name0\" ;",
+          "pred_sql": "SELECT COUNT( CITYalias0.CITY_NAME ) FROM CITY AS CITYalias0 WHERE CITYalias0.STATE_NAME = \"state_name0\"",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": true,
+          "pred_error": null,
+          "inference_time": 5.402
+        },
+        {
+          "question": "how many cities are in state_name0",
+          "gold_sql": "SELECT COUNT( CITYalias0.CITY_NAME ) FROM CITY AS CITYalias0 WHERE CITYalias0.STATE_NAME = \"state_name0\" ;",
+          "pred_sql": "SELECT COUNT( CITYalias0.CITY_NAME ) FROM CITY AS CITYalias0 WHERE CITYalias0.STATE_NAME = \"state_name0\"",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": true,
+          "pred_error": null,
+          "inference_time": 5.422
+        },
+        {
+          "question": "how many cities does state_name0 have",
+          "gold_sql": "SELECT COUNT( CITYalias0.CITY_NAME ) FROM CITY AS CITYalias0 WHERE CITYalias0.STATE_NAME = \"state_name0\" ;",
+          "pred_sql": "SELECT COUNT( CITYalias0.CITY_NAME ) FROM CITY AS CITYalias0 WHERE CITYalias0.STATE_NAME = \"state_name0\"",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": true,
+          "pred_error": null,
+          "inference_time": 5.5
+        },
+        {
+          "question": "what is the highest point in the state with the most rivers",
+          "gold_sql": "SELECT HIGHLOWalias0.HIGHEST_POINT FROM HIGHLOW AS HIGHLOWalias0 WHERE ( HIGHLOWalias0.STATE_NAME = ( SELECT RIVERalias0.TRAVERSE FROM RIVER AS RIVERalias0 , STATE AS STATEalias0 WHERE STATEalias0.STA",
+          "pred_sql": "SELECT HIGHLOWalias0.HIGHEST_POINT FROM HIGHLOW AS HIGHLOWalias0 WHERE HIGHLOWalias0.STATE_NAME = \"state_name0\"",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": false,
+          "pred_error": null,
+          "inference_time": 5.683
+        },
+        {
+          "question": "what is the area of the states",
+          "gold_sql": "SELECT STATEalias0.AREA FROM STATE AS STATEalias0 ;",
+          "pred_sql": "SELECT STATEalias0.AREA FROM STATE AS STATEalias0 WHERE STATEalias0.STATE_NAME = \"state_name0\"",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": false,
+          "pred_error": null,
+          "inference_time": 6.034
+        },
+        {
+          "question": "how many states in the us does the shortest river run through",
+          "gold_sql": "SELECT COUNT( RIVERalias0.TRAVERSE ) FROM RIVER AS RIVERalias0 WHERE RIVERalias0.LENGTH = ( SELECT MIN( RIVERalias1.LENGTH ) FROM RIVER AS RIVERalias1 ) ;",
+          "pred_sql": "SELECT COUNT( RIVERalias0.TRAVERSE ) FROM RIVER AS RIVERalias0 WHERE RIVERalias0.LENGTH = ( SELECT MIN( RIVERalias1.LENGTH ) FROM RIVER AS RIVERalias1 )",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": true,
+          "pred_error": null,
+          "inference_time": 5.741
+        },
+        {
+          "question": "what is the average population per square km in the us",
+          "gold_sql": "SELECT SUM( STATEalias0.POPULATION ) / SUM( STATEalias0.AREA ) FROM STATE AS STATEalias0 ;",
+          "pred_sql": "SELECT MAX( STATEalias0.POPULATION ) FROM STATE AS STATEalias0",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": false,
+          "pred_error": null,
+          "inference_time": 5.902
+        },
+        {
+          "question": "what rivers flow through states that border the state with the largest population",
+          "gold_sql": "SELECT RIVERalias0.RIVER_NAME FROM RIVER AS RIVERalias0 WHERE RIVERalias0.TRAVERSE IN ( SELECT BORDER_INFOalias0.BORDER FROM BORDER_INFO AS BORDER_INFOalias0 WHERE BORDER_INFOalias0.STATE_NAME IN ( SE",
+          "pred_sql": "SELECT RIVERalias0.RIVER_NAME FROM RIVER AS RIVERalias0 WHERE RIVERalias0.TRAVERSE IN ( SELECT BORDER_INFOalias0.BORDER FROM BORDER_INFO AS BORDER_INFOalias0 WHERE BORDER_INFOalias0.STATE_NAME = \"stat",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 5.732
+        },
+        {
+          "question": "what are the major cities in the largest state",
+          "gold_sql": "SELECT CITYalias0.CITY_NAME FROM CITY AS CITYalias0 WHERE CITYalias0.POPULATION > 150000 AND CITYalias0.STATE_NAME = ( SELECT STATEalias0.STATE_NAME FROM STATE AS STATEalias0 WHERE STATEalias0.AREA = ",
+          "pred_sql": "SELECT CITYalias0.CITY_NAME FROM CITY AS CITYalias0 WHERE CITYalias0.POPULATION = ( SELECT MAX( CITYalias1.POPULATION ) FROM CITY AS CITYalias1 )",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": false,
+          "pred_error": null,
+          "inference_time": 5.571
+        },
+        {
+          "question": "what is the area of the smallest state",
+          "gold_sql": "SELECT STATEalias0.AREA FROM STATE AS STATEalias0 WHERE STATEalias0.AREA = ( SELECT MIN( STATEalias1.AREA ) FROM STATE AS STATEalias1 ) ;",
+          "pred_sql": "SELECT STATEalias0.AREA FROM STATE AS STATEalias0 WHERE STATEalias0.AREA = ( SELECT MIN( STATEalias1.AREA ) FROM STATE AS STATEalias1 )",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": true,
+          "pred_error": null,
+          "inference_time": 5.785
+        },
+        {
+          "question": "which states border the longest river in the usa",
+          "gold_sql": "SELECT BORDER_INFOalias0.BORDER FROM BORDER_INFO AS BORDER_INFOalias0 WHERE BORDER_INFOalias0.STATE_NAME IN ( SELECT RIVERalias0.TRAVERSE FROM RIVER AS RIVERalias0 WHERE RIVERalias0.LENGTH = ( SELECT ",
+          "pred_sql": "SELECT RIVERalias0.TRAVERSE FROM RIVER AS RIVERalias0 WHERE RIVERalias0.LENGTH = ( SELECT MAX( RIVERalias1.LENGTH ) FROM RIVER AS RIVERalias1 )",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": false,
+          "pred_error": null,
+          "inference_time": 5.728
+        },
+        {
+          "question": "what is the population density of the state with the smallest population",
+          "gold_sql": "SELECT STATEalias0.DENSITY FROM STATE AS STATEalias0 WHERE STATEalias0.POPULATION = ( SELECT MIN( STATEalias1.POPULATION ) FROM STATE AS STATEalias1 ) ;",
+          "pred_sql": "SELECT STATEalias0.DENSITY FROM STATE AS STATEalias0 WHERE STATEalias0.POPULATION = ( SELECT MIN( STATEalias1.POPULATION ) FROM STATE AS STATEalias1 )",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": true,
+          "pred_error": null,
+          "inference_time": 5.7
+        },
+        {
+          "question": "how many states border the river_name0 river",
+          "gold_sql": "SELECT COUNT( DISTINCT BORDER_INFOalias0.BORDER ) FROM BORDER_INFO AS BORDER_INFOalias0 WHERE BORDER_INFOalias0.STATE_NAME IN ( SELECT RIVERalias0.TRAVERSE FROM RIVER AS RIVERalias0 WHERE RIVERalias0.",
+          "pred_sql": "SELECT BORDER_INFOalias1.BORDER FROM BORDER",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "no such table: BORDER",
+          "inference_time": 5.731
+        }
+      ]
+    },
+    "gpt2-atis": {
+      "model_name": "gpt2-atis",
+      "model_type": "gpt2",
+      "num_samples": 20,
+      "timestamp": "2026-02-05 09:50:32.874477",
+      "metrics": {
+        "exact_match": 0,
+        "partial_match": 20,
+        "execution_success": 6,
+        "result_match": 4,
+        "exact_match_pct": 0.0,
+        "execution_success_pct": 30.0,
+        "result_match_pct": 20.0
+      },
+      "samples": [
+        {
+          "question": "list type of aircraft for all flights from city_name0",
+          "gold_sql": "SELECT DISTINCT AIRCRAFTalias0.BASIC_TYPE FROM AIRCRAFT AS AIRCRAFTalias0 WHERE AIRCRAFTalias0.AIRCRAFT_CODE IN ( SELECT EQUIPMENT_SEQUENCEalias0.AIRCRAFT_CODE FROM EQUIPMENT_SEQUENCE AS EQUIPMENT_SEQ",
+          "pred_sql": "SELECT DISTINCT AIRCRAFTalias0.AIRCRAFT_CODE FROM AIRCRAFT AS AIRCRAFTalias0 WHERE AIRCRAFTalias0.AIRCRAFT_CODE = \"aircraft_code0\"",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": true,
+          "pred_error": null,
+          "inference_time": 8.615
+        },
+        {
+          "question": "list flights and fares from city_name0 to city_name1 round trip leaving saturday returning next saturday",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM FARE AS FAREalias0 , FLIGHT AS FLIGHTalias0 , FLIGHT_FARE AS FLIGHT_FAREalias0 WHERE ( ( ( FLIGHTalias0.FROM_AIRPORT IN ( SELECT AIRPORT_SERVICEalias0.AIRPO",
+          "pred_sql": "SELECT DISTINCT FAREalias0.FARE_ID FROM AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , CITY AS CITYalias0 , DATE_DAY AS DATE_DAYalias0 , DATE_DAY AS DATE_DAYalias1 , DAYS AS DAYSalias0 , DAYS AS DAYSalias",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 6.11
+        },
+        {
+          "question": "list flights from city_name1 to city_name0 on saturday of fare basis code of fare_basis_code0",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM FLIGHT AS FLIGHTalias0 WHERE ( ( ( FLIGHTalias0.FLIGHT_DAYS IN ( SELECT DAYSalias0.DAYS_CODE FROM DAYS AS DAYSalias0 WHERE DAYSalias0.DAY_NAME IN ( SELECT D",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , DATE_DAY AS DATE_DAYalias0 ,",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 5.766
+        },
+        {
+          "question": "list seating capacities of airline_code0 flights from city_name0 to city_name1",
+          "gold_sql": "SELECT DISTINCT AIRCRAFTalias0.AIRCRAFT_CODE FROM AIRCRAFT AS AIRCRAFTalias0 WHERE AIRCRAFTalias0.AIRCRAFT_CODE IN ( SELECT EQUIPMENT_SEQUENCEalias0.AIRCRAFT_CODE FROM EQUIPMENT_SEQUENCE AS EQUIPMENT_",
+          "pred_sql": "SELECT DISTINCT AIRCRAFTalias0.AIRCRAFT_CODE FROM AIRCRAFT AS AIRCRAFTalias0 WHERE AIRCRAFTalias0.AIRCRAFT_CODE = \"aircraft_code0\"",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": true,
+          "pred_error": null,
+          "inference_time": 5.724
+        },
+        {
+          "question": "list airline_code0 flights from city_name0 to city_name1 with aircraft type",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRCRAFT AS AIRCRAFTalias0 , EQUIPMENT_SEQUENCE AS EQUIPMENT_SEQUENCEalias0 , FLIGHT AS FLIGHTalias0 WHERE ( ( FLIGHTalias0.FROM_AIRPORT IN ( SELECT AIRPORT",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , FLIGHT AS FLIGHTalias0 WHERE",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": true,
+          "pred_error": null,
+          "inference_time": 6.091
+        },
+        {
+          "question": "give me the round trip flights from city_name1 to city_name0 next wednesday",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM FLIGHT AS FLIGHTalias0 WHERE ( ( ( FLIGHTalias0.FLIGHT_DAYS IN ( SELECT DAYSalias0.DAYS_CODE FROM DAYS AS DAYSalias0 WHERE DAYSalias0.DAY_NAME IN ( SELECT D",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , DATE_DAY AS DATE_DAYalias0 ,",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 5.468
+        },
+        {
+          "question": "give me the fares for round trip flights from city_name1 to city_name0 next wednesday",
+          "gold_sql": "SELECT DISTINCT FAREalias0.FARE_ID FROM FARE AS FAREalias0 WHERE ( ( FAREalias0.FARE_BASIS_CODE IN ( SELECT FARE_BASISalias0.FARE_BASIS_CODE FROM FARE_BASIS AS FARE_BASISalias0 WHERE FARE_BASISalias0.",
+          "pred_sql": "SELECT DISTINCT FAREalias0.FARE_ID FROM AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , DATE_DAY AS DATE_DAYalias0 , DAT",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 5.492
+        },
+        {
+          "question": "give me the fares from city_name1 to city_name0 next sunday",
+          "gold_sql": "SELECT DISTINCT FAREalias0.FARE_ID FROM FARE AS FAREalias0 WHERE ( FAREalias0.FARE_BASIS_CODE IN ( SELECT FARE_BASISalias0.FARE_BASIS_CODE FROM FARE_BASIS AS FARE_BASISalias0 WHERE FARE_BASISalias0.BA",
+          "pred_sql": "SELECT DISTINCT FAREalias0.FARE_ID FROM AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , DATE_DAY AS DATE_DAYalias0 , DAT",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 5.538
+        },
+        {
+          "question": "give me the meal flights departing early saturday morning from city_name1 to city_name0 nonstop",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM FLIGHT AS FLIGHTalias0 WHERE ( ( ( ( ( FLIGHTalias0.FLIGHT_DAYS IN ( SELECT DAYSalias0.DAYS_CODE FROM DAYS AS DAYSalias0 WHERE DAYSalias0.DAY_NAME IN ( SELE",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , DATE_DAY AS DATE_DAYalias0 ,",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 6.076
+        },
+        {
+          "question": "give me the flights from city_name1 to city_name0 saturday morning that have meals",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM FLIGHT AS FLIGHTalias0 WHERE ( ( ( ( FLIGHTalias0.FLIGHT_DAYS IN ( SELECT DAYSalias0.DAYS_CODE FROM DAYS AS DAYSalias0 WHERE DAYSalias0.DAY_NAME IN ( SELECT",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM FLIGHT AS FLIGHTalias0 WHERE ( ( ( ( FLIGHTalias0.FLIGHT_DAYS IN ( SELECT DAYSalias0.DAYS_CODE FROM DAYS AS DAYSalias0 WHERE DAYSalias0.DAY_NAME IN ( SELECT",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 5.907
+        },
+        {
+          "question": "give me the saturday morning flights with meals from city_name1 to city_name0",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM FLIGHT AS FLIGHTalias0 WHERE ( ( ( ( FLIGHTalias0.FLIGHT_DAYS IN ( SELECT DAYSalias0.DAYS_CODE FROM DAYS AS DAYSalias0 WHERE DAYSalias0.DAY_NAME IN ( SELECT",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM FLIGHT AS FLIGHTalias0 WHERE ( ( ( FLIGHTalias0.FLIGHT_DAYS IN ( SELECT DAYSalias0.DAYS_CODE FROM DAYS AS DAYSalias0 WHERE DAYSalias0.DAY_NAME IN ( SELECT D",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 5.584
+        },
+        {
+          "question": "give me flights from city_name1 to city_name0 that have meals on airline_code0",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM FLIGHT AS FLIGHTalias0 WHERE ( ( ( FLIGHTalias0.MEAL_CODE IN ( SELECT FOOD_SERVICEalias0.MEAL_CODE FROM FOOD_SERVICE AS FOOD_SERVICEalias0 ) AND FLIGHTalias",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , FLIGHT AS FLIGHTalias0 WHERE",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": true,
+          "pred_error": null,
+          "inference_time": 5.768
+        },
+        {
+          "question": "give me the cheapest round trip flights from city_name1 to city_name0 around month_number0 day_number0",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM FLIGHT AS FLIGHTalias0 WHERE ( ( ( FLIGHTalias0.FLIGHT_DAYS IN ( SELECT DAYSalias0.DAYS_CODE FROM DAYS AS DAYSalias0 WHERE DAYSalias0.DAY_NAME IN ( SELECT D",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , DATE_DAY AS DATE_DAYalias0 ,",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 5.836
+        },
+        {
+          "question": "cheapest one way fare from city_name1 to city_name0 on month_number0 day_number0",
+          "gold_sql": "SELECT DISTINCT FAREalias0.FARE_ID FROM FARE AS FAREalias0 WHERE ( ( FAREalias0.FARE_BASIS_CODE IN ( SELECT FARE_BASISalias1.FARE_BASIS_CODE FROM FARE_BASIS AS FARE_BASISalias1 WHERE FARE_BASISalias1.",
+          "pred_sql": "SELECT DISTINCT FAREalias0.FARE_ID FROM AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , DATE_DAY AS DATE_DAYalias0 , DAT",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 5.719
+        },
+        {
+          "question": "is there a fare from city_name0 to city_name1 under one_direction_cost0 dollars",
+          "gold_sql": "SELECT DISTINCT FAREalias0.FARE_ID FROM FARE AS FAREalias0 WHERE ( FAREalias0.FARE_ID IN ( SELECT FLIGHT_FAREalias0.FARE_ID FROM FLIGHT_FARE AS FLIGHT_FAREalias0 WHERE FLIGHT_FAREalias0.FLIGHT_ID IN (",
+          "pred_sql": "SELECT DISTINCT FAREalias0.FARE_ID FROM AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , FARE AS FAREalias0 , FLIGHT AS F",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "no such column: FLIGHT_FAREalias0.FROM_AIRPORT",
+          "inference_time": 5.733
+        },
+        {
+          "question": "city_name1 to city_name0 and city_name2 to city_name0 on sunday",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM FLIGHT AS FLIGHTalias0 WHERE ( ( FLIGHTalias0.FLIGHT_DAYS IN ( SELECT DAYSalias0.DAYS_CODE FROM DAYS AS DAYSalias0 WHERE DAYSalias0.DAY_NAME IN ( SELECT DAT",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , DATE_DAY AS DATE_DAYalias0 ,",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "no such column: day_number0",
+          "inference_time": 5.808
+        },
+        {
+          "question": "city_name1 to city_name0 and city_name2 to city_name0 on sunday",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM FLIGHT AS FLIGHTalias0 WHERE ( ( FLIGHTalias0.FLIGHT_DAYS IN ( SELECT DAYSalias0.DAYS_CODE FROM DAYS AS DAYSalias0 WHERE DAYSalias0.DAY_NAME IN ( SELECT DAT",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , DATE_DAY AS DATE_DAYalias0 ,",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "no such column: day_number0",
+          "inference_time": 5.746
+        },
+        {
+          "question": "city_name1 to city_name0 afternoon day_name0",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT AS AIRPORTalias0 , AIRPORT AS AIRPORTalias1 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalia",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT AS AIRPORTalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , CITY AS CITYalias0 , DAYS AS DAYSalias0 , FLIGHT AS FLIGHTalias0 WHERE CITYalias0.CITY",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": false,
+          "pred_error": null,
+          "inference_time": 5.616
+        },
+        {
+          "question": "city_name1 to city_name0 afternoon on day_name0",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT AS AIRPORTalias0 , AIRPORT AS AIRPORTalias1 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalia",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT AS AIRPORTalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , CITY AS CITYalias0 , DAYS AS DAYSalias0 , FLIGHT AS FLIGHTalias0 WHERE CITYalias0.CITY",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": false,
+          "pred_error": null,
+          "inference_time": 5.597
+        },
+        {
+          "question": "a flight from city_name1 to city_name0 arriving between arrival_time1 and arrival_time0",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM FLIGHT AS FLIGHTalias0 WHERE ( ( ( FLIGHTalias0.ARRIVAL_TIME <= arrival_time0 AND FLIGHTalias0.ARRIVAL_TIME >= arrival_time1 ) AND FLIGHTalias0.TO_AIRPORT I",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , FLIGHT AS FLIGHTalias0 WHERE",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "no such column: arrival_time0",
+          "inference_time": 5.971
+        }
+      ]
+    },
+    "tinyllama-geography": {
+      "model_name": "tinyllama-geography",
+      "model_type": "tinyllama",
+      "num_samples": 20,
+      "timestamp": "2026-02-05 09:52:36.183185",
+      "metrics": {
+        "exact_match": 0,
+        "partial_match": 14,
+        "execution_success": 8,
+        "result_match": 3,
+        "exact_match_pct": 0.0,
+        "execution_success_pct": 40.0,
+        "result_match_pct": 15.0
+      },
+      "samples": [
+        {
+          "question": "what is the longest river that does not run through state_name0",
+          "gold_sql": "SELECT DISTINCT RIVERalias0.RIVER_NAME FROM RIVER AS RIVERalias0 WHERE RIVERalias0.LENGTH = ( SELECT MAX( RIVERalias1.LENGTH ) FROM RIVER AS RIVERalias1 WHERE RIVERalias1.RIVER_NAME NOT IN ( SELECT RI",
+          "pred_sql": "SELECT RIVERalias0.RIVER_NAME FROM RIVER AS RIVERalias0 WHERE RIVERalias0.TRAVERSE = \"state_name0\"",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": false,
+          "pred_error": null,
+          "inference_time": 62.12
+        },
+        {
+          "question": "what are the largest cities in the states that border the largest state",
+          "gold_sql": "SELECT CITYalias0.CITY_NAME FROM CITY AS CITYalias0 WHERE CITYalias0.POPULATION IN ( SELECT DERIVED_TABLEalias1.DERIVED_FIELDalias0 FROM ( SELECT MAX( CITYalias1.POPULATION ) AS DERIVED_FIELDalias0 , ",
+          "pred_sql": "SELECT CITYalias1.CITY_NAME FROM CITY AS CITYalias1 WHERE CITYalias1.POPULATION = ( SELECT MAX( CITYalias2.POPULATION ) FROM CITY AS CITYalias2 , STATE AS STATEalias3 WHERE STATEalias3.STATE_NAME = CI",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 61.608
+        },
+        {
+          "question": "what state has no rivers",
+          "gold_sql": "SELECT STATEalias0.STATE_NAME FROM STATE AS STATEalias0 WHERE STATEalias0.STATE_NAME NOT IN ( SELECT RIVERalias0.TRAVERSE FROM RIVER AS RIVERalias0 ) ;",
+          "pred_sql": "SELECT STATEalias1.STATE_NAME , STATEalias2.POPULATION FROM STATE AS STATEalias1 JOIN ST",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "no such table: ST",
+          "inference_time": 60.13
+        },
+        {
+          "question": "how many rivers are in the state with the highest point",
+          "gold_sql": "SELECT COUNT( RIVERalias0.RIVER_NAME ) FROM HIGHLOW AS HIGHLOWalias0 , RIVER AS RIVERalias0 WHERE HIGHLOWalias0.HIGHEST_ELEVATION = ( SELECT MAX( HIGHLOWalias1.HIGHEST_ELEVATION ) FROM HIGHLOW AS HIGH",
+          "pred_sql": "SELECT COUNT( RIVERalias0.RIVER_NAME ) FROM RIVER AS RIVERalias0 WHERE RIVERalias0.TRAVERSE = ( SELECT MAX( HIGHLOWalias0.LOWEST_ELEVATION ) FROM HIGHLOW AS HIGHLOWalias0 )",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": false,
+          "pred_error": null,
+          "inference_time": 57.522
+        },
+        {
+          "question": "what state has the most cities",
+          "gold_sql": "SELECT CITYalias0.STATE_NAME FROM CITY AS CITYalias0 GROUP BY CITYalias0.STATE_NAME ORDER BY COUNT( 1 ) DESC LIMIT 1 ;",
+          "pred_sql": "SELECT CITYalias0.STATE_NAME FROM CITY AS CITYalias0 WHERE CITYalias0.POPULATION > 150000 GROUP BY CITYalias0.STATE_NAME ORDER BY COUNT( 1 ) DESC LIMIT 1",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": true,
+          "pred_error": null,
+          "inference_time": 59.428
+        },
+        {
+          "question": "what is the capital of the largest state",
+          "gold_sql": "SELECT STATEalias0.CAPITAL FROM STATE AS STATEalias0 WHERE STATEalias0.AREA = ( SELECT MAX( STATEalias1.AREA ) FROM STATE AS STATEalias1 ) ;",
+          "pred_sql": "SELECT STATEalias3.CAPITAL FROM STATE AS STATEalias3 WHERE STATEalias3.AREA = ( SELECT MAX( STATEalias1.AREA ) FROM STATE AS STATEalias",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 61.207
+        },
+        {
+          "question": "what is the capital city of the largest state in the us",
+          "gold_sql": "SELECT STATEalias0.CAPITAL FROM STATE AS STATEalias0 WHERE STATEalias0.AREA = ( SELECT MAX( STATEalias1.AREA ) FROM STATE AS STATEalias1 ) ;",
+          "pred_sql": "SELECT STATEalias1.CAPITAL FROM",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 58.293
+        },
+        {
+          "question": "how many cities are in state_name0",
+          "gold_sql": "SELECT COUNT( CITYalias0.CITY_NAME ) FROM CITY AS CITYalias0 WHERE CITYalias0.STATE_NAME = \"state_name0\" ;",
+          "pred_sql": "SELECT STATEalias0.POPULATION FROM STATE AS STATEalias0 WHERE STATEalias0",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "no such column: STATEalias0",
+          "inference_time": 60.983
+        },
+        {
+          "question": "how many cities are in state_name0",
+          "gold_sql": "SELECT COUNT( CITYalias0.CITY_NAME ) FROM CITY AS CITYalias0 WHERE CITYalias0.STATE_NAME = \"state_name0\" ;",
+          "pred_sql": "SELECT STATEalias0.POPULATION FROM STATE AS STATEalias0 WHERE STATEalias0",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "no such column: STATEalias0",
+          "inference_time": 60.223
+        },
+        {
+          "question": "how many cities does state_name0 have",
+          "gold_sql": "SELECT COUNT( CITYalias0.CITY_NAME ) FROM CITY AS CITYalias0 WHERE CITYalias0.STATE_NAME = \"state_name0\" ;",
+          "pred_sql": "SELECT",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 62.474
+        },
+        {
+          "question": "what is the highest point in the state with the most rivers",
+          "gold_sql": "SELECT HIGHLOWalias0.HIGHEST_POINT FROM HIGHLOW AS HIGHLOWalias0 WHERE ( HIGHLOWalias0.STATE_NAME = ( SELECT RIVERalias0.TRAVERSE FROM RIVER AS RIVERalias0 , STATE AS STATEalias0 WHERE STATEalias0.STA",
+          "pred_sql": "SELECT HIGHLOWalias0.HIGHEST_POINT FROM HIGHLOW AS HIGHLOWalias0 WHERE HIGHLOWalias0.STATE_NAME IN ( SELECT RIVERalias0.TRAVERSE FROM RIVER AS RIVERalias0 WHERE RIVERalias0.LENGTH > 100 )",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": false,
+          "pred_error": null,
+          "inference_time": 61.743
+        },
+        {
+          "question": "what is the area of the states",
+          "gold_sql": "SELECT STATEalias0.AREA FROM STATE AS STATEalias0 ;",
+          "pred_sql": "STATEalias5.STATE_NAME",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "near \"STATEalias5\": syntax error",
+          "inference_time": 61.756
+        },
+        {
+          "question": "how many states in the us does the shortest river run through",
+          "gold_sql": "SELECT COUNT( RIVERalias0.TRAVERSE ) FROM RIVER AS RIVERalias0 WHERE RIVERalias0.LENGTH = ( SELECT MIN( RIVERalias1.LENGTH ) FROM RIVER AS RIVERalias1 ) ;",
+          "pred_sql": "SELECT COUNT( DISTINCT RIVERalias0.TRAVERSE ) FROM RIVER AS RIVERalias0",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": false,
+          "pred_error": null,
+          "inference_time": 62.495
+        },
+        {
+          "question": "what is the average population per square km in the us",
+          "gold_sql": "SELECT SUM( STATEalias0.POPULATION ) / SUM( STATEalias0.AREA ) FROM STATE AS STATEalias0 ;",
+          "pred_sql": "SELECT STATEalias1.STATE_NAME , STATEalias2.STATE_NAME , STATEalias3.STATE_NAME , STATEalias4.STATE_NAME , STATEalias5.STATE_NAME , STATE_NAME0.STATE_NAME",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "no such column: STATEalias1.STATE_NAME",
+          "inference_time": 59.155
+        },
+        {
+          "question": "what rivers flow through states that border the state with the largest population",
+          "gold_sql": "SELECT RIVERalias0.RIVER_NAME FROM RIVER AS RIVERalias0 WHERE RIVERalias0.TRAVERSE IN ( SELECT BORDER_INFOalias0.BORDER FROM BORDER_INFO AS BORDER_INFOalias0 WHERE BORDER_INFOalias0.STATE_NAME IN ( SE",
+          "pred_sql": "SELECT RIVERalias0.RIVER_NAME FROM RIVER AS RIVERalias0 WHERE RIVERalias0.TRAVERSE IN ( SELECT BORDER_INFOalias0.BORDER FROM BORDER_INFO AS BORDER_INFOalias0 WHERE BORDER_INFOalias0.STATE_NAME IN ( SE",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": true,
+          "pred_error": null,
+          "inference_time": 64.242
+        },
+        {
+          "question": "what are the major cities in the largest state",
+          "gold_sql": "SELECT CITYalias0.CITY_NAME FROM CITY AS CITYalias0 WHERE CITYalias0.POPULATION > 150000 AND CITYalias0.STATE_NAME = ( SELECT STATEalias0.STATE_NAME FROM STATE AS STATEalias0 WHERE STATEalias0.AREA = ",
+          "pred_sql": "SELECT CITYalias1.CITY_NAME FROM CITY AS CITY",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "no such column: CITYalias1.CITY_NAME",
+          "inference_time": 60.236
+        },
+        {
+          "question": "what is the area of the smallest state",
+          "gold_sql": "SELECT STATEalias0.AREA FROM STATE AS STATEalias0 WHERE STATEalias0.AREA = ( SELECT MIN( STATEalias1.AREA ) FROM STATE AS STATEalias1 ) ;",
+          "pred_sql": "SELECT STATEalias0.AREA FROM STATE AS STATEalias0 WHERE STATEalias0.STATE_NAME = ( SELECT MAX( STATEalias1.AREA ) FROM STATE AS STATEalias1 )",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": false,
+          "pred_error": null,
+          "inference_time": 59.256
+        },
+        {
+          "question": "which states border the longest river in the usa",
+          "gold_sql": "SELECT BORDER_INFOalias0.BORDER FROM BORDER_INFO AS BORDER_INFOalias0 WHERE BORDER_INFOalias0.STATE_NAME IN ( SELECT RIVERalias0.TRAVERSE FROM RIVER AS RIVERalias0 WHERE RIVERalias0.LENGTH = ( SELECT ",
+          "pred_sql": "SELECT BORDER_INFOalias0.BORDER FROM BORDER_INFO AS BORDER_INFOalias0 WHERE BORDER_INFOalias0.STATE_NAME IN ( SELECT RIVERalias0.TRAVERSE FROM RIVER AS RIVERalias0 WHERE RIVERalias0.RIVER_NAME = ( SEL",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 57.854
+        },
+        {
+          "question": "what is the population density of the state with the smallest population",
+          "gold_sql": "SELECT STATEalias0.DENSITY FROM STATE AS STATEalias0 WHERE STATEalias0.POPULATION = ( SELECT MIN( STATEalias1.POPULATION ) FROM STATE AS STATEalias1 ) ;",
+          "pred_sql": "SELECT STATEalias3.DENSITY FROM STATE AS STATEalias3 WHERE STATEalias3.STATE",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "no such column: STATEalias3.STATE",
+          "inference_time": 57.49
+        },
+        {
+          "question": "how many states border the river_name0 river",
+          "gold_sql": "SELECT COUNT( DISTINCT BORDER_INFOalias0.BORDER ) FROM BORDER_INFO AS BORDER_INFOalias0 WHERE BORDER_INFOalias0.STATE_NAME IN ( SELECT RIVERalias0.TRAVERSE FROM RIVER AS RIVERalias0 WHERE RIVERalias0.",
+          "pred_sql": "SELECT COUNT( BORDER_INFOalias0.BORDER ) FROM BORDER_INFO AS BORDER_INFOalias0 WHERE BORDER_INFOalias0.STATE_NAME IN ( SELECT RIVERalias0.TRAVERSE FROM RIVER AS RIVERalias0 WHERE RIVERalias0.RIVER_NAM",
+          "exact_match": false,
+          "execution_success": true,
+          "result_match": true,
+          "pred_error": null,
+          "inference_time": 58.404
+        }
+      ]
+    },
+    "tinyllama-atis": {
+      "model_name": "tinyllama-atis",
+      "model_type": "tinyllama",
+      "num_samples": 20,
+      "timestamp": "2026-02-05 10:12:55.784836",
+      "metrics": {
+        "exact_match": 0,
+        "partial_match": 20,
+        "execution_success": 0,
+        "result_match": 0,
+        "exact_match_pct": 0.0,
+        "execution_success_pct": 0.0,
+        "result_match_pct": 0.0
+      },
+      "samples": [
+        {
+          "question": "list type of aircraft for all flights from city_name0",
+          "gold_sql": "SELECT DISTINCT AIRCRAFTalias0.BASIC_TYPE FROM AIRCRAFT AS AIRCRAFTalias0 WHERE AIRCRAFTalias0.AIRCRAFT_CODE IN ( SELECT EQUIPMENT_SEQUENCEalias0.AIRCRAFT_CODE FROM EQUIPMENT_SEQUENCE AS EQUIPMENT_SEQ",
+          "pred_sql": "SELECT DISTINCT AIRCRAFTalias0.AIRCRAFT_CODE FROM A",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "no such table: A",
+          "inference_time": 63.258
+        },
+        {
+          "question": "list flights and fares from city_name0 to city_name1 round trip leaving saturday returning next saturday",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM FARE AS FAREalias0 , FLIGHT AS FLIGHTalias0 , FLIGHT_FARE AS FLIGHT_FAREalias0 WHERE ( ( ( FLIGHTalias0.FROM_AIRPORT IN ( SELECT AIRPORT_SERVICEalias0.AIRPO",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , DATE_DAY AS DATE_DAYalias0 ,",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 62.34
+        },
+        {
+          "question": "list flights from city_name1 to city_name0 on saturday of fare basis code of fare_basis_code0",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM FLIGHT AS FLIGHTalias0 WHERE ( ( ( FLIGHTalias0.FLIGHT_DAYS IN ( SELECT DAYSalias0.DAYS_CODE FROM DAYS AS DAYSalias0 WHERE DAYSalias0.DAY_NAME IN ( SELECT D",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , DATE_DAY AS DATE_DAYalias0 ,",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 62.398
+        },
+        {
+          "question": "list seating capacities of airline_code0 flights from city_name0 to city_name1",
+          "gold_sql": "SELECT DISTINCT AIRCRAFTalias0.AIRCRAFT_CODE FROM AIRCRAFT AS AIRCRAFTalias0 WHERE AIRCRAFTalias0.AIRCRAFT_CODE IN ( SELECT EQUIPMENT_SEQUENCEalias0.AIRCRAFT_CODE FROM EQUIPMENT_SEQUENCE AS EQUIPMENT_",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT AS AIRPORTalias0 , AIRPORT AS AIRPORTalias1 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalia",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 63.908
+        },
+        {
+          "question": "list airline_code0 flights from city_name0 to city_name1 with aircraft type",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRCRAFT AS AIRCRAFTalias0 , EQUIPMENT_SEQUENCE AS EQUIPMENT_SEQUENCEalias0 , FLIGHT AS FLIGHTalias0 WHERE ( ( FLIGHTalias0.FROM_AIRPORT IN ( SELECT AIRPORT",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , FLIGHT AS FLIGHTalias0 , FLI",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "unrecognized token: \"\"airline_code0\"",
+          "inference_time": 64.229
+        },
+        {
+          "question": "give me the round trip flights from city_name1 to city_name0 next wednesday",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM FLIGHT AS FLIGHTalias0 WHERE ( ( ( FLIGHTalias0.FLIGHT_DAYS IN ( SELECT DAYSalias0.DAYS_CODE FROM DAYS AS DAYSalias0 WHERE DAYSalias0.DAY_NAME IN ( SELECT D",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , DATE_DAY AS DATE_DAYalias0 ,",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 64.952
+        },
+        {
+          "question": "give me the fares for round trip flights from city_name1 to city_name0 next wednesday",
+          "gold_sql": "SELECT DISTINCT FAREalias0.FARE_ID FROM FARE AS FAREalias0 WHERE ( ( FAREalias0.FARE_BASIS_CODE IN ( SELECT FARE_BASISalias0.FARE_BASIS_CODE FROM FARE_BASIS AS FARE_BASISalias0 WHERE FARE_BASISalias0.",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , DATE_DAY AS DATE_DAYalias0 ,",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 66.602
+        },
+        {
+          "question": "give me the fares from city_name1 to city_name0 next sunday",
+          "gold_sql": "SELECT DISTINCT FAREalias0.FARE_ID FROM FARE AS FAREalias0 WHERE ( FAREalias0.FARE_BASIS_CODE IN ( SELECT FARE_BASISalias0.FARE_BASIS_CODE FROM FARE_BASIS AS FARE_BASISalias0 WHERE FARE_BASISalias0.BA",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT AS AIRPORTalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , D",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 61.01
+        },
+        {
+          "question": "give me the meal flights departing early saturday morning from city_name1 to city_name0 nonstop",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM FLIGHT AS FLIGHTalias0 WHERE ( ( ( ( ( FLIGHTalias0.FLIGHT_DAYS IN ( SELECT DAYSalias0.DAYS_CODE FROM DAYS AS DAYSalias0 WHERE DAYSalias0.DAY_NAME IN ( SELE",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , DATE_DAY AS DATE_DAYalias0 ,",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 67.684
+        },
+        {
+          "question": "give me the flights from city_name1 to city_name0 saturday morning that have meals",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM FLIGHT AS FLIGHTalias0 WHERE ( ( ( ( FLIGHTalias0.FLIGHT_DAYS IN ( SELECT DAYSalias0.DAYS_CODE FROM DAYS AS DAYSalias0 WHERE DAYSalias0.DAY_NAME IN ( SELECT",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , DATE_DAY AS DATE_DAYalias0 ,",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 64.5
+        },
+        {
+          "question": "give me the saturday morning flights with meals from city_name1 to city_name0",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM FLIGHT AS FLIGHTalias0 WHERE ( ( ( ( FLIGHTalias0.FLIGHT_DAYS IN ( SELECT DAYSalias0.DAYS_CODE FROM DAYS AS DAYSalias0 WHERE DAYSalias0.DAY_NAME IN ( SELECT",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT AS AIRPORTalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , D",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 66.296
+        },
+        {
+          "question": "give me flights from city_name1 to city_name0 that have meals on airline_code0",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM FLIGHT AS FLIGHTalias0 WHERE ( ( ( FLIGHTalias0.MEAL_CODE IN ( SELECT FOOD_SERVICEalias0.MEAL_CODE FROM FOOD_SERVICE AS FOOD_SERVICEalias0 ) AND FLIGHTalias",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , FLIGHT AS FLIGHTalias0 , FOO",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 66.55
+        },
+        {
+          "question": "give me the cheapest round trip flights from city_name1 to city_name0 around month_number0 day_number0",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM FLIGHT AS FLIGHTalias0 WHERE ( ( ( FLIGHTalias0.FLIGHT_DAYS IN ( SELECT DAYSalias0.DAYS_CODE FROM DAYS AS DAYSalias0 WHERE DAYSalias0.DAY_NAME IN ( SELECT D",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , DATE_DAY AS DATE_DAYalias0 ,",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 65.514
+        },
+        {
+          "question": "cheapest one way fare from city_name1 to city_name0 on month_number0 day_number0",
+          "gold_sql": "SELECT DISTINCT FAREalias0.FARE_ID FROM FARE AS FAREalias0 WHERE ( ( FAREalias0.FARE_BASIS_CODE IN ( SELECT FARE_BASISalias1.FARE_BASIS_CODE FROM FARE_BASIS AS FARE_BASISalias1 WHERE FARE_BASISalias1.",
+          "pred_sql": "SELECT DISTINCT FAREalias0.FARE_ID FROM AIRPORT AS AIRPORTalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , DATE_",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "near \"airm_classification0\": syntax error",
+          "inference_time": 64.088
+        },
+        {
+          "question": "is there a fare from city_name0 to city_name1 under one_direction_cost0 dollars",
+          "gold_sql": "SELECT DISTINCT FAREalias0.FARE_ID FROM FARE AS FAREalias0 WHERE ( FAREalias0.FARE_ID IN ( SELECT FLIGHT_FAREalias0.FARE_ID FROM FLIGHT_FARE AS FLIGHT_FAREalias0 WHERE FLIGHT_FAREalias0.FLIGHT_ID IN (",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT AS AIRPORTalias0 , AIRPORT AS AIRPORTalias1 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalia",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 64.88
+        },
+        {
+          "question": "city_name1 to city_name0 and city_name2 to city_name0 on sunday",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM FLIGHT AS FLIGHTalias0 WHERE ( ( FLIGHTalias0.FLIGHT_DAYS IN ( SELECT DAYSalias0.DAYS_CODE FROM DAYS AS DAYSalias0 WHERE DAYSalias0.DAY_NAME IN ( SELECT DAT",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , DATE_DAY AS DATE_DAYalias0 ,",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 66.256
+        },
+        {
+          "question": "city_name1 to city_name0 and city_name2 to city_name0 on sunday",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM FLIGHT AS FLIGHTalias0 WHERE ( ( FLIGHTalias0.FLIGHT_DAYS IN ( SELECT DAYSalias0.DAYS_CODE FROM DAYS AS DAYSalias0 WHERE DAYSalias0.DAY_NAME IN ( SELECT DAT",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalias0 , CITY AS CITYalias1 , DATE_DAY AS DATE_DAYalias0 ,",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 65.351
+        },
+        {
+          "question": "city_name1 to city_name0 afternoon day_name0",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT AS AIRPORTalias0 , AIRPORT AS AIRPORTalias1 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalia",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT AS AIRPORTalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , CITY AS CITYalias0 , CITY AS CITYalias1 , FLIGHT AS FLIGHTalias0 WHERE ( ( ( FLIGHTali",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "near \"FROM\": syntax error",
+          "inference_time": 65.914
+        },
+        {
+          "question": "city_name1 to city_name0 afternoon on day_name0",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT AS AIRPORTalias0 , AIRPORT AS AIRPORTalias1 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalia",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT AS AIRPORTalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , CITY AS CITYalias0 , DAYS AS DAYSalias0 , FLIGHT AS FLIGHTalias0 WHERE ( ( ( ( ( ( FLI",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 65.795
+        },
+        {
+          "question": "a flight from city_name1 to city_name0 arriving between arrival_time1 and arrival_time0",
+          "gold_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM FLIGHT AS FLIGHTalias0 WHERE ( ( ( FLIGHTalias0.ARRIVAL_TIME <= arrival_time0 AND FLIGHTalias0.ARRIVAL_TIME >= arrival_time1 ) AND FLIGHTalias0.TO_AIRPORT I",
+          "pred_sql": "SELECT DISTINCT FLIGHTalias0.FLIGHT_ID FROM AIRPORT AS AIRPORTalias0 , AIRPORT AS AIRPORTalias1 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias0 , AIRPORT_SERVICE AS AIRPORT_SERVICEalias1 , CITY AS CITYalia",
+          "exact_match": false,
+          "execution_success": false,
+          "result_match": false,
+          "pred_error": "incomplete input",
+          "inference_time": 66.173
+        }
+      ]
+    }
+  }
+}

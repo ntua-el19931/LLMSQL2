@@ -1,0 +1,115 @@
+{
+  "timestamp": "2026-02-02T09:28:21.415157",
+  "database": "geography",
+  "category": "pretrained",
+  "models": {
+    "gpt2": {
+      "model_name": "gpt2-pretrained",
+      "database_name": "geography",
+      "total_queries": 30,
+      "accuracy": {
+        "sqlite_execution": "0.0%",
+        "postgres_execution": "0.0%",
+        "sqlite_result_match": "0.0%",
+        "postgres_result_match": "0.0%",
+        "cross_db_consistency": "0.0%"
+      },
+      "performance": {
+        "avg_inference_time_ms": 134.92,
+        "avg_sqlite_exec_time_ms": 0.16,
+        "avg_postgres_exec_time_ms": 0.8,
+        "total_inference_time_s": 4.05
+      },
+      "error_counts": {
+        "sqlite_syntax_error": 12,
+        "postgres_syntax_error": 12,
+        "sqlite_other_error": 18,
+        "postgres_other_error": 18
+      },
+      "accuracy_by_complexity": {
+        "SIMPLE": {
+          "total": 16,
+          "sqlite_exec": "0.0%",
+          "postgres_exec": "0.0%",
+          "sqlite_match": "0.0%",
+          "postgres_match": "0.0%"
+        },
+        "MEDIUM": {
+          "total": 8,
+          "sqlite_exec": "0.0%",
+          "postgres_exec": "0.0%",
+          "sqlite_match": "0.0%",
+          "postgres_match": "0.0%"
+        },
+        "COMPLEX": {
+          "total": 5,
+          "sqlite_exec": "0.0%",
+          "postgres_exec": "0.0%",
+          "sqlite_match": "0.0%",
+          "postgres_match": "0.0%"
+        },
+        "ADVANCED": {
+          "total": 1,
+          "sqlite_exec": "0.0%",
+          "postgres_exec": "0.0%",
+          "sqlite_match": "0.0%",
+          "postgres_match": "0.0%"
+        }
+      }
+    },
+    "tinyllama": {
+      "model_name": "tinyllama-pretrained",
+      "database_name": "geography",
+      "total_queries": 30,
+      "accuracy": {
+        "sqlite_execution": "0.0%",
+        "postgres_execution": "0.0%",
+        "sqlite_result_match": "0.0%",
+        "postgres_result_match": "0.0%",
+        "cross_db_consistency": "0.0%"
+      },
+      "performance": {
+        "avg_inference_time_ms": 60771.62,
+        "avg_sqlite_exec_time_ms": 1.68,
+        "avg_postgres_exec_time_ms": 0.76,
+        "total_inference_time_s": 1823.15
+      },
+      "error_counts": {
+        "sqlite_syntax_error": 20,
+        "postgres_syntax_error": 29,
+        "sqlite_other_error": 10,
+        "postgres_other_error": 1
+      },
+      "accuracy_by_complexity": {
+        "SIMPLE": {
+          "total": 16,
+          "sqlite_exec": "0.0%",
+          "postgres_exec": "0.0%",
+          "sqlite_match": "0.0%",
+          "postgres_match": "0.0%"
+        },
+        "MEDIUM": {
+          "total": 8,
+          "sqlite_exec": "0.0%",
+          "postgres_exec": "0.0%",
+          "sqlite_match": "0.0%",
+          "postgres_match": "0.0%"
+        },
+        "COMPLEX": {
+          "total": 5,
+          "sqlite_exec": "0.0%",
+          "postgres_exec": "0.0%",
+          "sqlite_match": "0.0%",
+          "postgres_match": "0.0%"
+        },
+        "ADVANCED": {
+          "total": 1,
+          "sqlite_exec": "0.0%",
+          "postgres_exec": "0.0%",
+          "sqlite_match": "0.0%",
+          "postgres_match": "0.0%"
+        }
+      }
+    }
+  }
+}

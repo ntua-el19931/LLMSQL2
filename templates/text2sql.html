@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text-to-SQL - LLMSQL2</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .hero-mini {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 0;
+        }
+        .question-input {
+            font-size: 1.1rem;
+            padding: 15px;
+        }
+        .sql-output {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .sql-keyword {
+            color: #569cd6;
+        }
+        .model-card {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .model-card:hover {
+            border-color: #667eea;
+        }
+        .model-card.selected {
+            border-color: #667eea;
+            background-color: #f0f0ff;
+        }
+        .example-question {
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .example-question:hover {
+            background-color: #e9ecef;
+        }
+        .loading-spinner {
+            display: none;
+        }
+        .loading .loading-spinner {
+            display: inline-block;
+        }
+        .loading .btn-text {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-database"></i> LLMSQL2
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/">Databases</a>
+                <a class="nav-link" href="/query">SQL Query</a>
+                <a class="nav-link active" href="/text2sql"><i class="bi bi-robot"></i> Text-to-SQL</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero-mini">
+        <div class="container text-center">
+            <h2><i class="bi bi-robot"></i> Text-to-SQL</h2>
+            <p class="mb-0">Ask questions in plain English, get SQL queries</p>
+        </div>
+    </div>
+
+    <div class="container my-4">
+        <div class="row">
+            <!-- Main Panel -->
+            <div class="col-lg-8">
+                <!-- Question Input -->
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <i class="bi bi-chat-dots"></i> Ask a Question
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <textarea id="questionInput" class="form-control question-input" rows="3"
+                                      placeholder="Example: What is the capital of the largest state?"></textarea>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Database</label>
+                                <select id="dbSelect" class="form-select">
+                                    {% for db_name, db_info in databases.items() %}
+                                    <option value="{{ db_name }}">{{ db_name | title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Model</label>
+                                <select id="modelSelect" class="form-select">
+                                    {% for model_name, model_info in models.items() %}
+                                    <option value="{{ model_name }}" data-db="{{ model_info.database }}" data-type="{{ model_info.type }}">
+                                        {{ model_name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button id="generateBtn" class="btn btn-primary btn-lg">
+                                <span class="btn-text"><i class="bi bi-lightning"></i> Generate SQL</span>
+                                <span class="loading-spinner spinner-border spinner-border-sm"></span>
+                            </button>
+                            <button id="executeBtn" class="btn btn-success btn-lg" disabled>
+                                <span class="btn-text"><i class="bi bi-play-circle"></i> Generate & Execute</span>
+                                <span class="loading-spinner spinner-border spinner-border-sm"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generated SQL -->
+                <div class="card mb-4" id="sqlCard" style="display: none;">
+                    <div class="card-header">
+                        <i class="bi bi-code-square"></i> Generated SQL
+                        <button class="btn btn-sm btn-outline-secondary float-end" onclick="copySQL()">
+                            <i class="bi bi-clipboard"></i> Copy
+                        </button>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="sqlOutput" class="sql-output"></div>
+                    </div>
+                </div>
+
+                <!-- Execution Results -->
+                <div class="card" id="resultsCard" style="display: none;">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-table"></i> Query Results</span>
+                        <span id="resultCount" class="badge bg-success">0 rows</span>
+                    </div>
+                    <div class="card-body" id="resultsBody">
+                    </div>
+                </div>
+
+                <!-- Error Display -->
+                <div class="alert alert-danger" id="errorAlert" style="display: none;">
+                    <i class="bi bi-exclamation-triangle"></i> <span id="errorMessage"></span>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Model Info -->
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <i class="bi bi-info-circle"></i> Model Info
+                    </div>
+                    <div class="card-body" id="modelInfo">
+                        <p class="text-muted">Select a model to see details</p>
+                    </div>
+                </div>
+
+                <!-- Schema -->
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <i class="bi bi-diagram-3"></i> Database Schema
+                    </div>
+                    <div class="card-body">
+                        <pre id="schemaDisplay" class="small mb-0" style="white-space: pre-wrap; font-size: 0.75rem;"></pre>
+                    </div>
+                </div>
+
+                <!-- Example Questions -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="bi bi-lightbulb"></i> Example Questions
+                    </div>
+                    <div class="list-group list-group-flush" id="exampleQuestions">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white py-3 mt-5">
+        <div class="container text-center">
+            <small>LLMSQL2 - Text-to-SQL Model Evaluation Project</small>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Schemas
+        const schemas = {{ schemas | tojson }};
+        
+        // Example questions per database
+        const examples = {
+            "geography": [
+                "What is the capital of the largest state?",
+                "How many cities are in Texas?",
+                "What is the longest river?",
+                "Which states border California?",
+                "What is the population of New York?"
+            ],
+            "atis": [
+                "Show me flights from Boston to Denver",
+                "What airlines fly to Los Angeles?",
+                "List all airports in California",
+                "What is the cheapest flight to Chicago?",
+                "Show morning flights from New York"
+            ],
+            "advising": [
+                "What courses are in the CS department?",
+                "Who teaches database courses?",
+                "What is the average GPA of students?",
+                "List all courses worth 4 credits",
+                "What courses are offered in Fall?"
+            ],
+            "restaurants": [
+                "Find Italian restaurants",
+                "What restaurants are in San Francisco?",
+                "Show restaurants with rating above 4",
+                "List all food types available",
+                "Find restaurants in downtown"
+            ]
+        };
+
+        const dbSelect = document.getElementById('dbSelect');
+        const modelSelect = document.getElementById('modelSelect');
+        const questionInput = document.getElementById('questionInput');
+        const generateBtn = document.getElementById('generateBtn');
+        const executeBtn = document.getElementById('executeBtn');
+        
+        let generatedSQL = '';
+
+        // Update UI when database changes
+        function updateForDatabase() {
+            const db = dbSelect.value;
+            
+            // Update schema display
+            document.getElementById('schemaDisplay').textContent = schemas[db] || 'No schema available';
+            
+            // Update examples
+            const exampleList = document.getElementById('exampleQuestions');
+            exampleList.innerHTML = (examples[db] || []).map(q => `
+                <button class="list-group-item list-group-item-action example-question" onclick="setQuestion('${q}')">
+                    ${q}
+                </button>
+            `).join('');
+            
+            // Filter models for this database
+            const options = modelSelect.querySelectorAll('option');
+            let firstMatch = null;
+            options.forEach(opt => {
+                if (opt.dataset.db === db) {
+                    opt.style.display = '';
+                    if (!firstMatch) firstMatch = opt;
+                } else {
+                    opt.style.display = 'none';
+                }
+            });
+            if (firstMatch) modelSelect.value = firstMatch.value;
+            
+            updateModelInfo();
+        }
+
+        // Update model info
+        function updateModelInfo() {
+            const model = modelSelect.value;
+            const opt = modelSelect.querySelector(`option[value="${model}"]`);
+            if (opt) {
+                const type = opt.dataset.type;
+                document.getElementById('modelInfo').innerHTML = `
+                    <p><strong>Model:</strong> ${model}</p>
+                    <p><strong>Type:</strong> ${type === 'gpt2' ? 'GPT-2 (124M params)' : 'TinyLlama (1.1B params)'}</p>
+                    <p><strong>Method:</strong> ${type === 'gpt2' ? 'Full fine-tuning' : 'LoRA adapters'}</p>
+                `;
+            }
+        }
+
+        // Set question from example
+        function setQuestion(q) {
+            questionInput.value = q;
+        }
+
+        // Copy SQL to clipboard
+        function copySQL() {
+            navigator.clipboard.writeText(generatedSQL);
+            alert('SQL copied to clipboard!');
+        }
+
+        // Generate SQL
+        async function generateSQL(execute = false) {
+            const question = questionInput.value.trim();
+            const model = modelSelect.value;
+            const database = dbSelect.value;
+
+            if (!question) {
+                showError('Please enter a question');
+                return;
+            }
+
+            // Show loading
+            const btn = execute ? executeBtn : generateBtn;
+            btn.classList.add('loading');
+            btn.disabled = true;
+            generateBtn.disabled = true;
+            executeBtn.disabled = true;
+            
+            hideError();
+            document.getElementById('sqlCard').style.display = 'none';
+            document.getElementById('resultsCard').style.display = 'none';
+
+            try {
+                const response = await fetch('/api/text2sql', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ question, model, database, execute })
+                });
+                
+                const result = await response.json();
+
+                if (result.error) {
+                    showError(result.error);
+                } else {
+                    // Show generated SQL
+                    generatedSQL = result.generated_sql;
+                    document.getElementById('sqlOutput').textContent = generatedSQL;
+                    document.getElementById('sqlCard').style.display = 'block';
+                    executeBtn.disabled = false;
+
+                    // Show execution results if available
+                    if (result.execution_result) {
+                        showResults(result.execution_result);
+                    } else if (result.execution_error) {
+                        showError('Execution error: ' + result.execution_error);
+                    }
+                }
+            } catch (e) {
+                showError('Request failed: ' + e.message);
+            }
+
+            // Reset buttons
+            btn.classList.remove('loading');
+            btn.disabled = false;
+            generateBtn.disabled = false;
+            if (generatedSQL) executeBtn.disabled = false;
+        }
+
+        // Show results table
+        function showResults(result) {
+            const resultsCard = document.getElementById('resultsCard');
+            const resultsBody = document.getElementById('resultsBody');
+            const resultCount = document.getElementById('resultCount');
+
+            if (!result.rows || result.rows.length === 0) {
+                resultsBody.innerHTML = '<p class="text-muted text-center">No results found</p>';
+                resultCount.textContent = '0 rows';
+            } else {
+                const headers = result.columns.map(c => `<th>${c}</th>`).join('');
+                const rows = result.rows.map(row => {
+                    const cells = result.columns.map(c => 
+                        `<td>${row[c] !== null ? row[c] : '<em class="text-muted">NULL</em>'}</td>`
+                    ).join('');
+                    return `<tr>${cells}</tr>`;
+                }).join('');
+
+                resultsBody.innerHTML = `
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover table-sm">
+                            <thead class="table-dark"><tr>${headers}</tr></thead>
+                            <tbody>${rows}</tbody>
+                        </table>
+                    </div>
+                `;
+                resultCount.textContent = `${result.count} rows`;
+            }
+            resultsCard.style.display = 'block';
+        }
+
+        // Show/hide error
+        function showError(msg) {
+            document.getElementById('errorMessage').textContent = msg;
+            document.getElementById('errorAlert').style.display = 'block';
+        }
+        function hideError() {
+            document.getElementById('errorAlert').style.display = 'none';
+        }
+
+        // Event listeners
+        dbSelect.addEventListener('change', updateForDatabase);
+        modelSelect.addEventListener('change', updateModelInfo);
+        generateBtn.addEventListener('click', () => generateSQL(false));
+        executeBtn.addEventListener('click', () => generateSQL(true));
+
+        // Keyboard shortcut
+        questionInput.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'Enter') {
+                generateSQL(true);
+            }
+        });
+
+        // Initial setup
+        updateForDatabase();
+    </script>
+</body>
+</html>

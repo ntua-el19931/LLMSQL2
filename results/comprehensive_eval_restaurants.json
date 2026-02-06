@@ -1,0 +1,59 @@
+{
+  "timestamp": "2026-02-02T01:23:38.985403",
+  "database": "restaurants",
+  "num_samples": 20,
+  "models": {
+    "gpt2": {
+      "model_name": "gpt2-restaurants",
+      "database_name": "restaurants",
+      "total_queries": 20,
+      "accuracy": {
+        "sqlite_execution": "0.0%",
+        "postgres_execution": "0.0%",
+        "sqlite_result_match": "0.0%",
+        "postgres_result_match": "0.0%",
+        "cross_db_consistency": "0.0%"
+      },
+      "performance": {
+        "avg_inference_time_ms": 3286.32,
+        "avg_sqlite_exec_time_ms": 1.78,
+        "avg_postgres_exec_time_ms": 0.75,
+        "total_inference_time_s": 65.73
+      },
+      "error_counts": {
+        "sqlite_missing_column": 20,
+        "postgres_other_error": 20
+      },
+      "accuracy_by_complexity": {
+        "SIMPLE": {
+          "total": 0,
+          "sqlite_exec": "N/A",
+          "postgres_exec": "N/A",
+          "sqlite_match": "N/A",
+          "postgres_match": "N/A"
+        },
+        "MEDIUM": {
+          "total": 0,
+          "sqlite_exec": "N/A",
+          "postgres_exec": "N/A",
+          "sqlite_match": "N/A",
+          "postgres_match": "N/A"
+        },
+        "COMPLEX": {
+          "total": 20,
+          "sqlite_exec": "0.0%",
+          "postgres_exec": "0.0%",
+          "sqlite_match": "0.0%",
+          "postgres_match": "0.0%"
+        },
+        "ADVANCED": {
+          "total": 0,
+          "sqlite_exec": "N/A",
+          "postgres_exec": "N/A",
+          "sqlite_match": "N/A",
+          "postgres_match": "N/A"
+        }
+      }
+    }
+  }
+}
