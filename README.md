@@ -111,3 +111,8 @@ results = evaluate_model(model, dataset="spider")
 - [Improving Text-to-SQL Evaluation Methodology (ACL 2018)](http://aclweb.org/anthology/P18-1033)
 - [TinyLlama-1.1B-Text2SQL](https://huggingface.co/ManthanKulakarni/TinyLlama-1.1B-Text2SQL)
 - [qwen2.5-coder-text2nosql](https://huggingface.co/frtcek95/qwen2.5-coder-text2nosql)
+
+## Contributors
+- [@ntua-el19931](https://github.com/ntua-el19931)
+- [@Sskarm](https://github.com/Sskarm)
+- [@dimtze03](https://github.com/dimtze03)
